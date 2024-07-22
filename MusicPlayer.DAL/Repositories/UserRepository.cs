@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MusicPlayer.DAL.Repositories
 {
-    internal class UserRepository
+    public class UserRepository
     {
     }
 }
