@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MusicPlayer.DAL;
+namespace MusicPlayer.DAL.Models;
 
 public partial class Music
 {
