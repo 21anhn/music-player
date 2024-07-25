@@ -51,9 +51,10 @@ namespace MusicPlayer.PresentationLayer
         }
         private void RegisterHyperlink_Click(object sender, RoutedEventArgs e)
         {
+            this.Hide();
             RegisterWindow re = new();
             re.ShowDialog();
-            this.Hide();
+            
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
