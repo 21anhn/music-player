@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="5.0.0" />
   </ItemGroup>
 
@@ -16,6 +17,17 @@
     <ProjectReference Include="..\MusicPlayer.BLL\MusicPlayer.BLL.csproj">
       <Private>True</Private>
     </ProjectReference>
+
+    <None Remove="Background.png" />
+    <None Remove="password-icon.png" />
+    <None Remove="user-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Background.png" />
+    <Resource Include="password-icon.png" />
+    <Resource Include="user-icon.png" />
+
   </ItemGroup>
 
   <ItemGroup>
