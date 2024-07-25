@@ -11,6 +11,8 @@
   <ItemGroup>
 
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="5.0.0" />
+
+    <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
