@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayer.PresentationLayer"
         mc:Ignorable="d"
-           Title="Login Window" Height="510" Width="900" WindowStartupLocation="CenterScreen">
+        Title="LoginWindow" Height="510" Width="900" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/imgs/background.png"/>

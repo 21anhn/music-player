@@ -63,7 +63,7 @@ namespace MusicPlayer.PresentationLayer
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
-            Close();
+            Close();       
         }
     }
 }
