@@ -5,8 +5,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayer.PresentationLayer"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+           Title="LoginWindow" Height="510" Width="900" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Grid.Background>
+            <ImageBrush ImageSource="/imgs/background.png"/>
+        </Grid.Background>
+
+        <!-- Login Panel -->
+        <Grid Width="380" Height="387" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- Overlay Rectangle -->
+            <Rectangle Fill="#FF071A06" Stroke="#FFADADAD" StrokeThickness="1" Opacity="0.6" RadiusX="15" RadiusY="15"/>
+
+            <!-- Title Label -->
+            <Label Content="FPT Music" VerticalAlignment="Top" HorizontalAlignment="Center" 
+                   Foreground="White" FontFamily="Poppins-Bold" FontSize="32" FontWeight="Bold" Margin="0,29,0,0"/>
+
+            <!-- Subtitle Label -->
+            <Label Content="Bring music next to you" VerticalAlignment="Top" HorizontalAlignment="Center"
+                   Foreground="#BABABA" FontFamily="Poppins-Bold" FontSize="13" FontWeight="Bold" Margin="0,77,0,0"/>
+
+            <!-- Username TextBox -->
+            <Border BorderThickness="1" BorderBrush="#1DD661" Margin="46,128,46,208" CornerRadius="15">
+                <Grid>
+                    <TextBlock x:Name="UsernameTextBlock" Text="Username" FontSize="16" Margin="16,0,196,0" Padding="1 2" Height="29" Foreground="White" VerticalAlignment="Center"  MouseDown="UsernameTextBlock_MouseDown" />
+                    <TextBox x:Name="UserNameTextBox" Height="29" Margin="16,0,27,0" Padding="0 2" VerticalAlignment="Center" FontSize="16" Foreground="White" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" TextChanged="UserNameTextBox_TextChanged" FontWeight="Normal"/>
+                    <Image x:Name="UserIconImage" Source="/imgs/user-icon.png" Height="15" Margin="259,17,5,17"/>
+                </Grid>
+            </Border>
+
+            <!-- PasswordBox -->
+            <Border BorderThickness="1" BorderBrush="#1DD661" Margin="46,199,46,137" CornerRadius="15">
+                <Grid>
+                    <TextBlock x:Name="PasswordTextBlock" Text="Password" FontSize="16" Margin="16,0,196,0" Padding="1 2" Height="29" Foreground="White" VerticalAlignment="Center"  MouseDown="PasswordTextBlock_MouseDown" />
+                    <PasswordBox x:Name="PasswordBox" Height="29" Margin="16,0,27,0" Padding="0 2" VerticalAlignment="Center" FontSize="16" Foreground="White" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" PasswordChanged="PasswordBox_PasswordChanged"/>
+                    <Image x:Name="PasswordIconImage" Source="/imgs/password-icon.png" Height="15" Margin="259,17,5,17"/>
+                </Grid>
+            </Border>
+
+            <!-- Login Button -->
+            <Button x:Name="LoginButton" Width="163" Height="40" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Background="#0DAB09" Foreground="White" FontFamily="Poppins-Bold" FontSize="16" FontWeight="Bold" Content="LOGIN" BorderThickness="0" Click="LoginButton_Click" >
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    BorderThickness="{TemplateBinding BorderThickness}" 
+                    CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- Register Label -->
+            <Label VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,335,0,0" Foreground="White"
+                   FontFamily="Poppins-Light" FontSize="14" FontWeight="Regular" HorizontalContentAlignment="Center">
+                <TextBlock TextAlignment="Center">
+                    <Run FontWeight="Light">Don’t have an account?</Run>
+                    <Run FontFamily="Poppins-Regular" Text=" "/>
+                   <Hyperlink FontFamily="Poppins-Bold" FontWeight="Bold" Foreground="White" Click="RegisterHyperlink_Click">
+                       <Run Text="Register"/>
+                   </Hyperlink>
+                </TextBlock>
+            </Label>
+        </Grid>
+
     </Grid>
 </Window>

@@ -8,33 +8,20 @@ namespace MusicPlayer.DAL.Repositories
 {
     public class UserRepository
     {
-        private readonly MusicPlayerContext _context;
+        private MusicPlayerContext _context;
 
-        public UserRepository(MusicPlayerContext context)
+        public bool RegisterUser(User user)
         {
-            _context = context;
+            _context = new ();
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return true;
         }
 
-        public async Task<bool> RegisterUserAsync(User user)
+        public User? GetOne(string username, string password) 
         {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
-
-            if (string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Password))
-                return false;
-
-         
-            var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == user.Username);
-
-            if (existingUser != null)
-                return false;
-
-        
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return true;
+            _context = new();
+            return _context.Users.FirstOrDefault(x => x.Username.ToLower() == username.ToLower() && x.Password == password);
         }
     }
 }

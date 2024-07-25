@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using MusicPlayer.BLL.Services;
 using MusicPlayer.DAL;
 using MusicPlayer.DAL.Models;
 using MusicPlayer.DAL.Repositories;
@@ -9,15 +10,14 @@ namespace MusicPlayer.PresentationLayer
 {
     public partial class RegisterWindow : Window
     {
-        private readonly UserRepository _userRepository;
+        private UserService _service = new();
 
         public RegisterWindow()
         {
             InitializeComponent();
-            _userRepository = new UserRepository(new MusicPlayerContext());
         }
 
-        private async void RegisterButton_Click(object sender, RoutedEventArgs e)
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             var fullName = FullNameTextBox.Text;
             var username = EmailTextBox.Text;
@@ -37,22 +37,15 @@ namespace MusicPlayer.PresentationLayer
                 return;
             }
 
-            var user = new User
-            {
-                FullName = fullName,
-                Username = username,
-                Password = password
-            };
-
             try
             {
-                bool success = await _userRepository.RegisterUserAsync(user);
+                bool success = _service.Register(fullName, username, password);
 
                 if (success)
                 {
                     MessageBox.Show("Registration successful!");
                     LoginWindow loginWindow = new LoginWindow();
-                    loginWindow.Show();
+                    loginWindow.ShowDialog();
                     this.Close();
                 }
                 else
@@ -69,7 +62,7 @@ namespace MusicPlayer.PresentationLayer
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Show();
+            loginWindow.ShowDialog();
             this.Close();
         }
     }

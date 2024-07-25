@@ -20,15 +20,47 @@
       <Private>True</Private>
     </ProjectReference>
 
-    <None Remove="Background.png" />
-    <None Remove="password-icon.png" />
-    <None Remove="user-icon.png" />
+    <None Remove="imgs\add_library-icon.png" />
+
+    <None Remove="imgs\background.png" />
+
+    <None Remove="imgs\library-icon.png" />
+
+    <None Remove="imgs\password-icon.png" />
+
+    <None Remove="imgs\pause-icon.png" />
+
+    <None Remove="imgs\R.png" />
+
+    <None Remove="imgs\repeat-icon.png" />
+
+    <None Remove="imgs\search-icon.png" />
+
+    <None Remove="imgs\shuffle-icon.png" />
+
+    <None Remove="imgs\skip_next-icon.png" />
+
+    <None Remove="imgs\skip_previous-icon.png" />
+
+    <None Remove="imgs\user-icon.png" />
+
+    <None Remove="imgs\volume-icon.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Background.png" />
-    <Resource Include="password-icon.png" />
-    <Resource Include="user-icon.png" />
+    <Resource Include="imgs\add_library-icon.png" />
+    <Resource Include="imgs\background.png" />
+    <Resource Include="imgs\library-icon.png" />
+    <Resource Include="imgs\password-icon.png" />
+    <Resource Include="imgs\pause-icon.png" />
+    <Resource Include="imgs\R.png" />
+    <Resource Include="imgs\repeat-icon.png" />
+    <Resource Include="imgs\search-icon.png" />
+    <Resource Include="imgs\shuffle-icon.png" />
+    <Resource Include="imgs\skip_next-icon.png" />
+    <Resource Include="imgs\skip_previous-icon.png" />
+    <Resource Include="imgs\user-icon.png" />
+    <Resource Include="imgs\volume-icon.png" />
 
   </ItemGroup>
 

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MusicPlayer.DAL\MusicPlayer.DAL.csproj">
       <Private>True</Private>
     </ProjectReference>
