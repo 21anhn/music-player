@@ -62,8 +62,8 @@ namespace MusicPlayer.PresentationLayer
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
-            loginWindow.ShowDialog();
-            this.Close();
+            loginWindow.Show();
+            Close();
         }
     }
 }

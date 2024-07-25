@@ -49,12 +49,6 @@ namespace MusicPlayer.PresentationLayer
             else
                 PasswordTextBlock.Visibility = Visibility.Visible;
         }
-        private void RegisterHyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            RegisterWindow re = new();
-            re.ShowDialog();
-            this.Hide();
-        }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -75,7 +69,14 @@ namespace MusicPlayer.PresentationLayer
             MainWindow m = new();
             //m.CurrentAccount = account;
             m.Show();
-            this.Hide();
+            this.Close();
+        }
+
+        private void NavigateButton_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterWindow re = new();
+            re.Show();
+            Close();
         }
     }
 

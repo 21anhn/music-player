@@ -73,6 +73,7 @@
             <Setter Property="Kind" Value="ChevronRight"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="Visibility" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"/>
+            
         </Style>
 
         <!-- Green Button Style -->
