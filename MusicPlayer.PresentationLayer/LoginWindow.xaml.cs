@@ -72,12 +72,11 @@ namespace MusicPlayer.PresentationLayer
             this.Close();
         }
 
-        private void NavigateButton_Click(object sender, RoutedEventArgs e)
+        private void RegisterHyperlink_Click(object sender, RoutedEventArgs e)
         {
+            this.Hide();
             RegisterWindow re = new();
-            re.Show();
-            Close();
+            re.ShowDialog();
         }
     }
-
 }

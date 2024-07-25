@@ -5,80 +5,80 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayer.PresentationLayer"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="510" Width="900" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="RegisterWindow" Height="630" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
 
     <Grid Margin="0,0,0,-16">
         <Grid.Background>
             <ImageBrush ImageSource="/imgs/background.png"/>
         </Grid.Background>
 
-        <!-- Centered container for registration fields -->
-        <Border Width="466" Height="408" Background="#FF071A06" BorderBrush="#FFADADAD" BorderThickness="2" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.9">
-            <StackPanel Margin="20,0,17,0" VerticalAlignment="Center" Height="402">
-                <!-- Title -->
-                <Label Content="FPT Music Player" VerticalAlignment="Top" Foreground="White" FontFamily="Sans Serif Collection" FontWeight="Bold" FontSize="28" HorizontalAlignment="Center"/>
+        <Grid Width="380" Height="496" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- Overlay Rectangle -->
+            <Rectangle Fill="#FF071A06" Stroke="#FFADADAD" StrokeThickness="1" Opacity="0.6" RadiusX="15" RadiusY="15"/>
 
-                <!-- Full name field -->
-                <Grid Margin="0,20,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Source="/imgs/user-icon.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0"/>
-                    <TextBlock Text="Full Name" Foreground="#AAAAAA" Margin="7,-21,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Border Grid.Column="1" Background="Transparent" BorderBrush="#1DD661" BorderThickness="1" CornerRadius="5">
-                        <TextBox x:Name="FullNameTextBox" TextWrapping="Wrap" Background="Transparent" Foreground="White" Margin="10,0" BorderThickness="0"/>
-                    </Border>
+            <!-- Title Label -->
+            <Label Content="FPT Music Player" VerticalAlignment="Top" HorizontalAlignment="Center" 
+           Foreground="White" FontFamily="Poppins-Bold" FontSize="32" FontWeight="Bold" Margin="0,24,0,0"/>
+
+            <!-- Subtitle Label -->
+            <Label Content="Bring music next to you" VerticalAlignment="Top" HorizontalAlignment="Center"
+           Foreground="#BABABA" FontFamily="Poppins-Bold" FontSize="13" FontWeight="Bold" Margin="0,72,0,0"/>
+
+            <!-- FullName TextBox -->
+            <Border BorderThickness="1" BorderBrush="#FF2D9654" Margin="46,125,46,320" Height="51" Width="287" CornerRadius="10">
+                <Grid>
+                    <TextBlock x:Name="FullNameTextBlock" Text="Full Name" FontSize="16" Margin="16,0,196,0" Padding="1 2" Height="29" Foreground="White" VerticalAlignment="Center"  MouseDown="UsernameTextBlock_MouseDown" />
+                    <TextBox x:Name="FullNameTextBox" Height="29" Margin="16,0,27,0" Padding="0 2" VerticalAlignment="Center" FontSize="16" Foreground="White" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" TextChanged="FullNameTextBox_TextChanged" FontWeight="Normal"/>
                 </Grid>
+            </Border>
 
-                <!-- Username field -->
-                <Grid Margin="0,10,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Source="/imgs/user-icon.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0"/>
-                    <TextBlock Text="Username" Foreground="#AAAAAA" Margin="6,-21,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Border Grid.Column="1" Background="Transparent" BorderBrush="#1DD661" BorderThickness="1" CornerRadius="5">
-                        <TextBox x:Name="EmailTextBox" TextWrapping="Wrap" Background="Transparent" Foreground="White" Margin="10,0" BorderThickness="0"/>
-                    </Border>
+            <!-- Username TextBox -->
+            <Border BorderThickness="1" BorderBrush="#FF2D9654" Margin="46,197,46,248" Height="51" Width="287" CornerRadius="10">
+                <Grid>
+                    <TextBlock x:Name="UsernameTextBlock" Text="Username" FontSize="16" Margin="16,0,196,0" Padding="1 2" Height="29" Foreground="White" VerticalAlignment="Center"  MouseDown="UsernameTextBlock_MouseDown" />
+                    <TextBox x:Name="UserNameTextBox" Height="29" Margin="16,0,27,0" Padding="0 2" VerticalAlignment="Center" FontSize="16" Foreground="White" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" TextChanged="UserNameTextBox_TextChanged" FontWeight="Normal"/>
                 </Grid>
+            </Border>
 
-                <!-- Password field -->
-                <Grid Margin="0,10,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Source="/imgs/password-icon.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0"/>
-                    <TextBlock Text="Password" Foreground="#AAAAAA" Margin="6,-21,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Border Grid.Column="1" Background="Transparent" BorderBrush="#1DD661" BorderThickness="1" CornerRadius="5">
-                        <PasswordBox x:Name="PasswordTextBox" Background="Transparent" Foreground="White" Margin="10,0" BorderThickness="0"/>
-                    </Border>
+            <!-- PasswordBox -->
+            <Border BorderThickness="1" BorderBrush="#FF2D9654" Margin="46,264,46,181" Height="51" Width="287" CornerRadius="10">
+                <Grid>
+                    <TextBlock x:Name="PasswordTextBlock" Text="Password" FontSize="16" Margin="16,0,196,0" Padding="1 2" Height="29" Foreground="White" VerticalAlignment="Center"  MouseDown="PasswordTextBlock_MouseDown" />
+                    <PasswordBox x:Name="PasswordBox" Height="29" Margin="16,0,27,0" Padding="0 2" VerticalAlignment="Center" FontSize="16" Foreground="White" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" PasswordChanged="PasswordBox_PasswordChanged"/>
                 </Grid>
+            </Border>
 
-                <!-- Confirm Password field -->
-                <Grid Margin="0,10,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Source="/imgs/password-icon.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0"/>
-                    <TextBlock Text="Confirm Password" Foreground="#AAAAAA" Margin="6,-21,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Border Grid.Column="1" Background="Transparent" BorderBrush="#1DD661" BorderThickness="1" CornerRadius="5">
-                        <PasswordBox x:Name="ConfirmPasswordTextBox" Background="Transparent" Foreground="White" Margin="10,0" BorderThickness="0"/>
-                    </Border>
+            <!-- Confirm PasswordBox -->
+            <Border BorderThickness="1" BorderBrush="#FF2D9654" Margin="46,333,46,112" Height="51" Width="287" CornerRadius="10">
+                <Grid>
+                    <TextBlock x:Name="ConfirmPasswordTextBlock" Text="Confirm Password" FontSize="16" Margin="16,0,130,0" Padding="1 2" Height="29" Foreground="White" VerticalAlignment="Center"  MouseDown="ConfirmPasswordTextBlock_MouseDown" />
+                    <PasswordBox x:Name="ConfirmPasswordBox" Height="29" Margin="16,0,27,0" Padding="0 2" VerticalAlignment="Center" FontSize="16" Foreground="White" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" PasswordChanged="ConfirmPasswordBox_PasswordChanged"/>
                 </Grid>
+            </Border>
 
-                <!-- Register button -->
-                <Button x:Name="RegisterButton" Content="REGISTER" HorizontalAlignment="Center" Height="46" Width="214" Click="RegisterButton_Click" Background="#0DAB09" Foreground="White" FontSize="16" BorderThickness="0" Margin="0,10,0,10"/>
+            <!-- Login Button -->
+            <Button x:Name="RegisterButton" Width="164" Height="40" VerticalAlignment="Top" Margin="0,405,0,0" HorizontalAlignment="Center" Background="#0DAB09" Foreground="White" FontFamily="Poppins-Bold" FontSize="12" FontWeight="Bold" Content="REGISTER" BorderThickness="0" Click="RegisterButton_Click" >
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
-                <!-- Login section -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <Label Content="Already have an account?" Foreground="White" FontFamily="Sans Serif Collection" FontSize="14"/>
-                    <Button x:Name="LoginButton" Content="Click here" FontFamily="Sans Serif Collection" FontSize="14" Foreground="White" Background="#0DAB09" BorderThickness="0" Margin="5,0,0,0" Click="LoginButton_Click" Width="89"/>
-                </StackPanel>
-            </StackPanel>
-        </Border>
+            <!-- Login Label -->
+            <Label VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,459,0,0" Foreground="White"
+           FontFamily="Poppins-Light" FontSize="14" FontWeight="Regular" HorizontalContentAlignment="Center">
+                <TextBlock TextAlignment="Center">
+                    <Run FontWeight="Light">Have an account?</Run>
+                    <Run FontFamily="Poppins-Regular" Text=" "/>
+                    <Hyperlink FontFamily="Poppins-Bold" FontWeight="Bold" Foreground="White" Click="LoginHyperlink_Click">
+                        <Run Text="Login"/>
+                    </Hyperlink>
+                </TextBlock>
+            </Label>
+
+        </Grid>
     </Grid>
 </Window>
