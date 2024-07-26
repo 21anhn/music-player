@@ -161,5 +161,15 @@ namespace MusicPlayer.PresentationLayer
                 .Build();
             return config["StorageSettings:MusicStoragePath"];
         }
+
+        private void PlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void CreatePlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

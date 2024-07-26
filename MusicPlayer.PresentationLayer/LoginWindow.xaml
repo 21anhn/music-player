@@ -68,7 +68,7 @@
                 </TextBlock>
             </Label>
             <!-- Exit Button -->
-            <Button x:Name="ExitButton" Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Click="ExitButton_Click" Margin="0,-96,-291,0">
+            <Button x:Name="ExitButton" Width="64" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Click="ExitButton_Click" Margin="0,-96,-291,0">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Grid>

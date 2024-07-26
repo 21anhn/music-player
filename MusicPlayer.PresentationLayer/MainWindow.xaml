@@ -86,12 +86,13 @@
                         </Grid>
                     </Button>
 
-                    <Button Style="{StaticResource menuButton}">
+                    <Button x:Name="PlaylistButton" Style="{StaticResource menuButton}" Click="PlaylistButton_Click">
                         <Grid>
                             <TextBlock Text="Playlist" Margin="0 0 0 2"/>
                             <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}" Visibility="Visible"/>
                         </Grid>
                     </Button>
+
 
                     <Button x:Name="SongsButton" Style="{StaticResource menuButton}" Click="SongsButton_Click">
                         <Grid>
@@ -107,7 +108,7 @@
             <Border x:Name="MusicSection" Grid.Column="1" Grid.Row="1" Background="#282828" CornerRadius="40" Margin="40 60 10 0">
                 <StackPanel Margin="20">
                     <TextBlock x:Name="SectionTitle" Foreground="White" Text="Home" Style="{StaticResource titleText}" Margin="20"/>
-                    <ListView x:Name="MusicsListView" Visibility="Visible" Height="155" Width="725">
+                    <ListView x:Name="MusicsListView" Visibility="Collapsed" Height="155" Width="725">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Music Id" DisplayMemberBinding="{Binding MusicId}" Width="50"/>
@@ -117,11 +118,10 @@
                             </GridView>
                         </ListView.View>
                         <!--Buttons for uploading and deleting songs-->
-
                     </ListView>
 
                     <!-- ListView for Songs -->
-                    <StackPanel Orientation="Horizontal" Margin="10">
+                    <StackPanel Visibility="Collapsed" Orientation="Horizontal" Margin="10">
                         <Button x:Name="UploadSongButton" Content="Upload Song" Width="109" Margin="10 0 10 0" Background="#0DAB09" Foreground="White" Click="UploadSongButton_Click" Height="26">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
@@ -142,6 +142,50 @@
                         </Button>
                     </StackPanel>
 
+                    <!-- ListView for Playlists -->
+                    <StackPanel x:Name="PlaylistSection" Visibility="Collapsed" Margin="20">
+                        <TextBlock Foreground="White" Text="Playlists" Style="{StaticResource titleText}" Margin="20"/>
+                        <ListView x:Name="PlaylistsListView" Height="155" Width="725">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Playlist Id" DisplayMemberBinding="{Binding PlaylistId}" Width="50"/>
+                                    <GridViewColumn Header="Playlist Name" DisplayMemberBinding="{Binding PlaylistName}" Width="200"/>
+                                    <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="200"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="CreatePlaylistButton" Content="Create Playlist" Width="120" Background="#1E88E5" Foreground="White" Click="CreatePlaylistButton_Click" Height="26" Margin="10">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                    <!-- ListView for Playlists -->
+                    <StackPanel  Visibility="Visible" Margin="20">
+                        
+                        <ListView Height="155" Width="725">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Playlist Id" DisplayMemberBinding="{Binding PlaylistId}" Width="50"/>
+                                    <GridViewColumn Header="Playlist Name" DisplayMemberBinding="{Binding PlaylistName}" Width="200"/>
+                                    <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="200"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button Content="Create Playlist" Width="115" Background="#1E88E5" Foreground="White" Click="CreatePlaylistButton_Click" Height="26">
+                            <Button.Template>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Border>
         </Grid>
