@@ -22,15 +22,15 @@
             <Border Grid.ColumnSpan="2">
                 <Grid Margin="20,0,20,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="250"/>
                         <ColumnDefinition Width="500"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="FPT Music" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" FontSize="30" Margin="25,0,25,0"/>
+                    <TextBlock Text="FPT Music Player" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" FontSize="30" Grid.Column="0"/>
 
                     <!-- Search Box with Icon inside -->
-                    <Border Grid.Column="1" Background="White" CornerRadius="20" VerticalAlignment="Center" Margin="80,0,55,0" Height="50">
+                    <Border Grid.Column="1" Background="White" CornerRadius="20" VerticalAlignment="Center" Margin="40,0,55,0" Height="50">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>
@@ -75,7 +75,7 @@
             <Border Background="#282828" CornerRadius="10" Grid.Row="1" Margin="10 0 0 0">
                 <StackPanel>
 
-                    <TextBlock Text="Your Library" Style="{StaticResource menuTitle}"/>
+                    <TextBlock Text="Your Library" Style="{StaticResource menuTitle}" Margin="40 20 0 20"/>
                     <Button x:Name="HomeButton" Width="183" Style="{StaticResource menuButton}" Background="#02be68" Foreground="White" Click="HomeButton_Click">
                         <Grid>
                             <TextBlock Text="Home" Margin="0 0 0 2"/>
@@ -86,7 +86,7 @@
                     <Button x:Name="PlaylistButton" Style="{StaticResource menuButton}" Click="PlaylistButton_Click">
                         <Grid>
                             <TextBlock Text="Playlist" Margin="0 0 0 2"/>
-                            <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}" Visibility="Visible"/>
+                            <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}" Visibility="Visible" HorizontalAlignment="Left" Margin="78,0,0,0"/>
                         </Grid>
                     </Button>
 
