@@ -122,9 +122,26 @@
 
                     <!-- ListView for Songs -->
                     <StackPanel Orientation="Horizontal" Margin="10">
-                        <Button x:Name="UploadSongButton" Content="Upload Song" Width="100" Margin="10 0 10 0" Visibility="Visible" Click="UploadSongButton_Click"/>
-                        <Button x:Name="DeleteSongButton" Content="Delete Song" Width="100" Visibility="Visible" Click="DeleteSongButton_Click"/>
+                        <Button x:Name="UploadSongButton" Content="Upload Song" Width="109" Margin="10 0 10 0" Background="#0DAB09" Foreground="White" Click="UploadSongButton_Click" Height="26">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="DeleteSongButton" Content="Delete Song" Width="100" Background="#D32F2F" Foreground="White" Click="DeleteSongButton_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
                     </StackPanel>
+
                 </StackPanel>
             </Border>
         </Grid>

@@ -115,5 +115,10 @@ namespace MusicPlayer.PresentationLayer
             LoginWindow l = new();
             l.Show();
         }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }
