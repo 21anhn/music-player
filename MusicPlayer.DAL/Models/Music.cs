@@ -21,9 +21,5 @@ public partial class Music
 
     public virtual ICollection<PlaylistMusic> PlaylistMusics { get; set; } = new List<PlaylistMusic>();
 
-<<<<<<< Updated upstream
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
-=======
     public virtual User? User { get; set; }
->>>>>>> Stashed changes
 }

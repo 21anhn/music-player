@@ -122,7 +122,6 @@ namespace MusicPlayer.PresentationLayer
             {
                 return;
             }
-            MessageBox.Show("UserID:" +CurrentUser.UserId);
             WelcomeNameTextBlock.Text = CurrentUser.FullName;
             SectionTitle.Text = "Home";
             MusicsListView.Visibility = Visibility.Collapsed;

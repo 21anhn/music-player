@@ -32,11 +32,7 @@ public partial class MusicPlayerContext : DbContext
     {
         modelBuilder.Entity<Music>(entity =>
         {
-<<<<<<< Updated upstream
-            entity.HasKey(e => e.MusicId).HasName("PK__Music__AB12F87E17845B4D");
-=======
             entity.HasKey(e => e.MusicId).HasName("PK__Music__AB12F87EB029B69C");
->>>>>>> Stashed changes
 
             entity.ToTable("Music");
 
@@ -59,11 +55,7 @@ public partial class MusicPlayerContext : DbContext
 
         modelBuilder.Entity<Playlist>(entity =>
         {
-<<<<<<< Updated upstream
-            entity.HasKey(e => e.PlaylistId).HasName("PK__Playlist__D52A11268DC45C7C");
-=======
             entity.HasKey(e => e.PlaylistId).HasName("PK__Playlist__D52A1126E3FFFA19");
->>>>>>> Stashed changes
 
             entity.ToTable("Playlist");
 
@@ -82,11 +74,7 @@ public partial class MusicPlayerContext : DbContext
 
         modelBuilder.Entity<PlaylistMusic>(entity =>
         {
-<<<<<<< Updated upstream
-            entity.HasKey(e => e.Id).HasName("PK__Playlist__3213E83F693BC619");
-=======
             entity.HasKey(e => e.Id).HasName("PK__Playlist__3213E83FC125FD51");
->>>>>>> Stashed changes
 
             entity.ToTable("PlaylistMusic");
 
@@ -96,48 +84,26 @@ public partial class MusicPlayerContext : DbContext
 
             entity.HasOne(d => d.Music).WithMany(p => p.PlaylistMusics)
                 .HasForeignKey(d => d.MusicId)
-<<<<<<< Updated upstream
-                .HasConstraintName("FK__PlaylistM__music__3A81B327");
-
-            entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistMusics)
-                .HasForeignKey(d => d.PlaylistId)
-                .HasConstraintName("FK__PlaylistM__playl__3B75D760");
-=======
                 .HasConstraintName("FK__PlaylistM__music__3E52440B");
 
             entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistMusics)
                 .HasForeignKey(d => d.PlaylistId)
                 .HasConstraintName("FK__PlaylistM__playl__3F466844");
->>>>>>> Stashed changes
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-<<<<<<< Updated upstream
-            entity.HasKey(e => e.UserId).HasName("PK__User__CB9A1CFF32029896");
-=======
             entity.HasKey(e => e.UserId).HasName("PK__User__CB9A1CFF0C79D85C");
->>>>>>> Stashed changes
 
             entity.ToTable("User");
 
             entity.Property(e => e.UserId).HasColumnName("userId");
             entity.Property(e => e.FullName).HasColumnName("fullName");
-            entity.Property(e => e.MusicId).HasColumnName("musicId");
             entity.Property(e => e.Password)
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("password");
-            entity.Property(e => e.PlaylistId).HasColumnName("playlistId");
             entity.Property(e => e.Username).HasColumnName("username");
-
-            entity.HasOne(d => d.Music).WithMany(p => p.Users)
-                .HasForeignKey(d => d.MusicId)
-                .HasConstraintName("FK__User__musicId__3F466844");
-
-            entity.HasOne(d => d.Playlist).WithMany(p => p.Users)
-                .HasForeignKey(d => d.PlaylistId)
-                .HasConstraintName("FK__User__playlistId__3E52440B");
         });
 
         OnModelCreatingPartial(modelBuilder);
