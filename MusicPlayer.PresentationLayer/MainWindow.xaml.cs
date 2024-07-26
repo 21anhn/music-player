@@ -40,9 +40,8 @@ namespace MusicPlayer.PresentationLayer
             _mediaPlayer.Volume = VolumeSlider.Value;
         }
 
-
+        //search control
         private void SearchTextBlock_MouseDown(object sender, MouseButtonEventArgs e) => SearchTextBox.Focus();
-
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -50,6 +49,25 @@ namespace MusicPlayer.PresentationLayer
                 SearchTextBlock.Visibility = Visibility.Collapsed;
             else
                 SearchTextBlock.Visibility = Visibility.Visible;
+        }
+        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true; // Optional: Prevent the "ding" sound when Enter is pressed
+                SearchMusic();
+            }
+        }
+
+        private void SearchMusic()
+        {
+            var searchText = SearchTextBox.Text.Trim();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                // Implement your search logic here
+                // For example: search in the music list
+                MessageBox.Show($"Searching for: {searchText}");
+            }
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -141,6 +159,7 @@ namespace MusicPlayer.PresentationLayer
             _service.DeleteMusic(music);
             LoadData();
         }
+
         private void HomeView(Visibility visibility)
         {
             if (visibility.Equals(Visibility.Visible))
@@ -263,17 +282,8 @@ namespace MusicPlayer.PresentationLayer
             }
 
         }
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (PauseButton.Visibility == Visibility.Visible)
-            {
-                _mediaPlayer.Pause();
 
-                PauseButton.Visibility = Visibility.Collapsed;
-                PlayButton.Visibility = Visibility.Visible;
-            }
-        }
-
+        // Event handlers for music controls
         private void PlayMusic(Music music)
         {
             if (File.Exists(music.Link))
@@ -291,12 +301,12 @@ namespace MusicPlayer.PresentationLayer
 
                 _mediaPlayer.MediaEnded += (s, e) =>
                 {
-                    if (_isReplayEnabled)
+                    if (EnabledReplayButton.Visibility == Visibility)
                     {
                         // Nếu đang bật chế độ phát lại, phát lại bài hát hiện tại
                         PlayMusic(music);
                     }
-                    else
+                    else 
                     {
                         // Nếu không, phát bài hát tiếp theo
                         PlayNextSong();
@@ -316,55 +326,16 @@ namespace MusicPlayer.PresentationLayer
             }
         }
 
-        private void StartPlaybackTimer()
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_timer == null)
+            if (PauseButton.Visibility == Visibility.Visible)
             {
-                _timer = new DispatcherTimer
-                {
-                    Interval = TimeSpan.FromSeconds(1)
-                };
-                _timer.Tick += (s, e) =>
-                {
-                    if (_mediaPlayer.NaturalDuration.HasTimeSpan)
-                    {
-                        PositionSlider.Value = _mediaPlayer.Position.TotalSeconds;
-                        CurrentTimeTextBlock.Text = _mediaPlayer.Position.ToString(@"mm\:ss");
-                    }
-                };
-                _timer.Start();
+                _mediaPlayer.Pause();
+
+                PauseButton.Visibility = Visibility.Collapsed;
+                PlayButton.Visibility = Visibility.Visible;
             }
         }
-
-        // Event handler for slider value change
-        private void PositionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (_mediaPlayer.NaturalDuration.HasTimeSpan && !_mediaPlayer.IsBuffering)
-            {
-                _mediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
-            }
-        }
-        private void PositionSlider_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-            Point mousePosition = e.GetPosition(PositionSlider);
-            double newValue = (mousePosition.X / PositionSlider.ActualWidth) * PositionSlider.Maximum;
-            PositionSlider.Value = newValue;
-
-            if (_mediaPlayer.NaturalDuration.HasTimeSpan)
-            {
-                _mediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
-            }
-        }
-        private void UpdateTotalTime()
-        {
-            if (_mediaPlayer.NaturalDuration.HasTimeSpan)
-            {
-                TotalTimeTextBlock.Text = _mediaPlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
-            }
-        }
-        // Event handlers for music controls
-
         private void PlayNextSong()
         {
             if (_playlist.Count == 0) return; // Không có bài hát để phát
@@ -406,16 +377,10 @@ namespace MusicPlayer.PresentationLayer
         }
 
 
-
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             PlayNextSong();
             ChangeIconButtonInPlayMusic();
-        }
-
-        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            _mediaPlayer.Volume = VolumeSlider.Value;
         }
         private void RandomButton_Click(object sender, RoutedEventArgs e)
         {
@@ -437,8 +402,98 @@ namespace MusicPlayer.PresentationLayer
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
-            _isReplayEnabled = !_isReplayEnabled; // Chuyển đổi trạng thái phát lại
-            //ReplayButton.Content = _isReplayEnabled ? "Replay On" : "Replay Off"; // Cập nhật nội dung nút
+            ReplayButton.Visibility = Visibility.Collapsed;
+            EnabledReplayButton.Visibility = Visibility.Visible;
+           
+        }
+        private void EnabledReplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            ReplayButton.Visibility = Visibility.Visible;
+            EnabledReplayButton.Visibility = Visibility.Collapsed;
+        }
+
+        //timeline control
+        private void StartPlaybackTimer()
+        {
+            if (_timer == null)
+            {
+                _timer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(1)
+                };
+                _timer.Tick += (s, e) =>
+                {
+                    if (_mediaPlayer.NaturalDuration.HasTimeSpan)
+                    {
+                        PositionSlider.Value = _mediaPlayer.Position.TotalSeconds;
+                        CurrentTimeTextBlock.Text = _mediaPlayer.Position.ToString(@"mm\:ss");
+                    }
+                };
+                _timer.Start();
+            }
+        }
+
+             // Event handler for slider value change
+        private void PositionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_mediaPlayer.NaturalDuration.HasTimeSpan && !_mediaPlayer.IsBuffering)
+            {
+                _mediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
+            }
+        }
+        private void PositionSlider_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            Point mousePosition = e.GetPosition(PositionSlider);
+            double newValue = (mousePosition.X / PositionSlider.ActualWidth) * PositionSlider.Maximum;
+            PositionSlider.Value = newValue;
+
+            if (_mediaPlayer.NaturalDuration.HasTimeSpan)
+            {
+                _mediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
+            }
+        }
+        private void UpdateTotalTime()
+        {
+            if (_mediaPlayer.NaturalDuration.HasTimeSpan)
+            {
+                TotalTimeTextBlock.Text = _mediaPlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+            }
+        }
+
+        //volume control
+        private void VolumeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _mediaPlayer.Volume = 0;
+            VolumeSlider.Value = 0;
+            VolumeButton.Visibility = Visibility.Collapsed;
+            MuteButton.Visibility = Visibility.Visible;
+        }
+
+        private void MuteButton_Click(object sender, RoutedEventArgs e)
+        {
+            _mediaPlayer.Volume = 0.5;
+            VolumeSlider.Value = 0.5;
+            MuteButton.Visibility = Visibility.Collapsed;
+            VolumeButton.Visibility = Visibility.Visible;
+        }
+
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _mediaPlayer.Volume = VolumeSlider.Value;
+
+            if (VolumeSlider.Value == 0)
+            {
+                VolumeButton.Visibility = Visibility.Collapsed;
+                MuteButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                VolumeButton.Visibility = Visibility.Visible;
+                MuteButton.Visibility = Visibility.Collapsed;
+            }
+
+            _mediaPlayer.Volume = VolumeSlider.Value;
         }
     }
 }
