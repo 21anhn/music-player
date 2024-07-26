@@ -169,6 +169,8 @@ namespace MusicPlayer.PresentationLayer
 
         private void CreatePlaylistButton_Click(object sender, RoutedEventArgs e)
         {
+            PlayListWindow playListWindow = new PlayListWindow();
+            playListWindow.Show();
 
         }
     }

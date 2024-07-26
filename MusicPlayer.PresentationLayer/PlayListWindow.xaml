@@ -1,0 +1,116 @@
+﻿<Window x:Class="MusicPlayer.PresentationLayer.PlayListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Title="PlayListWindow" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        AllowsTransparency="True" Background="Transparent" WindowStyle="None">
+    <Border Background="Black" CornerRadius="20" MouseDown="Border_MouseDown">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Navbar -->
+            <Border Grid.ColumnSpan="2" Background="#1e1e1e" CornerRadius="20 20 0 0">
+                <Grid Margin="20,0,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Playlist Title -->
+                    <TextBlock Text="Playlist" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" FontSize="30" Margin="25,0,25,0" Grid.Column="0"/>
+
+                    <!-- Playlist Name TextBlock and TextBox -->
+                    <Border Grid.Column="1" Margin="38,20,200,21" BorderThickness="1" BorderBrush="White" CornerRadius="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Playlist Name TextBlock -->
+                            <TextBlock x:Name="PlayListTextBlock"
+                                       Text="Playlist Name"
+                                       FontSize="16"
+                                       Margin="65,0,75,0"
+                                       Padding="0 2"
+                                       Height="29"
+                                       Foreground="White"
+                                       VerticalAlignment="Center" Grid.Column="1" MouseDown="PlayListTextBlock_MouseDown" />
+
+                            <!-- Playlist Name TextBox -->
+                            <TextBox x:Name="PlayListTextBox"
+                                     Height="28"
+                                     Margin="10,0,10,0"
+                                     Padding="0 2"
+                                     VerticalAlignment="Center"
+                                     FontSize="16"
+                                     Foreground="White"
+                                     Background="Transparent"
+                                     BorderBrush="Transparent"
+                                     BorderThickness="0"
+                                     FontWeight="Normal" Grid.Column="1" TextChanged="PlayListTextBox_TextChanged" />
+                        </Grid>
+                    </Border>
+
+                    <!-- Add Song Button -->
+                    <Button x:Name="CreateSongButton" Content="Create" Background="#1E88E5" Foreground="White" Click="CreateSongButton_Click" Grid.Column="1" Margin="422,20,10,20" Grid.ColumnSpan="2">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="10">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Close Button -->
+                    <Button x:Name="CloseButton" Content="Close" Background="#D32F2F" Foreground="White" Width="80" Height="38" Click="CloseButton_Click" Grid.Column="3" Margin="10">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="10">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Music Section -->
+            <Border x:Name="MusicSection" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#282828" CornerRadius="20" Margin="20">
+                <StackPanel Margin="20">
+                    <TextBlock x:Name="SectionTitle" Foreground="White" Text="Songs in Playlist" FontSize="24" FontWeight="Bold" Margin="20"/>
+                    <ListView x:Name="MusicsListView" Height="300" Width="750">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Music Id" DisplayMemberBinding="{Binding MusicId}" Width="50"/>
+                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="200"/>
+                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="200"/>
+                                <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="200"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
