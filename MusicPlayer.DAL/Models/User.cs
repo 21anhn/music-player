@@ -12,4 +12,12 @@ public partial class User
     public string? FullName { get; set; }
 
     public string? Password { get; set; }
+
+    public int? PlaylistId { get; set; }
+
+    public int? MusicId { get; set; }
+
+    public virtual Music? Music { get; set; }
+
+    public virtual Playlist? Playlist { get; set; }
 }

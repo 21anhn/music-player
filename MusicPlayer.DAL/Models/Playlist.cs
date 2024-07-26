@@ -14,4 +14,6 @@ public partial class Playlist
     public bool? Status { get; set; }
 
     public virtual ICollection<PlaylistMusic> PlaylistMusics { get; set; } = new List<PlaylistMusic>();
+
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

@@ -44,11 +44,12 @@ public partial class MusicPlayerContext : DbContext
     {
         modelBuilder.Entity<Music>(entity =>
         {
-            entity.HasKey(e => e.MusicId).HasName("PK__Music__AB12F87E47703982");
+            entity.HasKey(e => e.MusicId).HasName("PK__Music__AB12F87E17845B4D");
 
             entity.ToTable("Music");
 
             entity.Property(e => e.MusicId).HasColumnName("musicId");
+            entity.Property(e => e.ArtistName).HasColumnName("artistName");
             entity.Property(e => e.CreatedDate)
                 .HasColumnType("datetime")
                 .HasColumnName("createdDate");
@@ -61,7 +62,7 @@ public partial class MusicPlayerContext : DbContext
 
         modelBuilder.Entity<Playlist>(entity =>
         {
-            entity.HasKey(e => e.PlaylistId).HasName("PK__Playlist__D52A1126EB3EE2B7");
+            entity.HasKey(e => e.PlaylistId).HasName("PK__Playlist__D52A11268DC45C7C");
 
             entity.ToTable("Playlist");
 
@@ -75,7 +76,7 @@ public partial class MusicPlayerContext : DbContext
 
         modelBuilder.Entity<PlaylistMusic>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Playlist__3213E83FA7E9B817");
+            entity.HasKey(e => e.Id).HasName("PK__Playlist__3213E83F693BC619");
 
             entity.ToTable("PlaylistMusic");
 
@@ -85,26 +86,36 @@ public partial class MusicPlayerContext : DbContext
 
             entity.HasOne(d => d.Music).WithMany(p => p.PlaylistMusics)
                 .HasForeignKey(d => d.MusicId)
-                .HasConstraintName("FK__PlaylistM__music__3C69FB99");
+                .HasConstraintName("FK__PlaylistM__music__3A81B327");
 
             entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistMusics)
                 .HasForeignKey(d => d.PlaylistId)
-                .HasConstraintName("FK__PlaylistM__playl__3D5E1FD2");
+                .HasConstraintName("FK__PlaylistM__playl__3B75D760");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__User__CB9A1CFF24C1DB21");
+            entity.HasKey(e => e.UserId).HasName("PK__User__CB9A1CFF32029896");
 
             entity.ToTable("User");
 
             entity.Property(e => e.UserId).HasColumnName("userId");
             entity.Property(e => e.FullName).HasColumnName("fullName");
+            entity.Property(e => e.MusicId).HasColumnName("musicId");
             entity.Property(e => e.Password)
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("password");
+            entity.Property(e => e.PlaylistId).HasColumnName("playlistId");
             entity.Property(e => e.Username).HasColumnName("username");
+
+            entity.HasOne(d => d.Music).WithMany(p => p.Users)
+                .HasForeignKey(d => d.MusicId)
+                .HasConstraintName("FK__User__musicId__3F466844");
+
+            entity.HasOne(d => d.Playlist).WithMany(p => p.Users)
+                .HasForeignKey(d => d.PlaylistId)
+                .HasConstraintName("FK__User__playlistId__3E52440B");
         });
 
         OnModelCreatingPartial(modelBuilder);
