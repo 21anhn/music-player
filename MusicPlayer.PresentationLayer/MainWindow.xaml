@@ -79,7 +79,7 @@
 
                     <TextBlock Text="Your Library" Style="{StaticResource menuTitle}"/>
 
-                    <Button x:Name="HomeButton" Style="{StaticResource menuButton}" Background="#02be68" Foreground="White">
+                    <Button x:Name="HomeButton" Style="{StaticResource menuButton}" Background="#02be68" Foreground="White" Click="HomeButton_Click">
                         <Grid>
                             <TextBlock Text="Home" Margin="0 0 0 2"/>
                             <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}"/>
@@ -107,17 +107,24 @@
             <Border x:Name="MusicSection" Grid.Column="1" Grid.Row="1" Background="#282828" CornerRadius="40" Margin="40 60 10 0">
                 <StackPanel Margin="20">
                     <TextBlock x:Name="SectionTitle" Foreground="White" Text="Home" Style="{StaticResource titleText}" Margin="20"/>
-
-                    <!-- ListView for Songs -->
-                    <ListView x:Name="SongsListView" Visibility="Collapsed" Margin="10">
+                    <ListView x:Name="MusicsListView" Visibility="Visible" Height="155" Width="725">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="200"/>
-                                <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Artist}" Width="200"/>
-                                <GridViewColumn Header="Album" DisplayMemberBinding="{Binding Album}" Width="200"/>
+                                <GridViewColumn Header="Music Id" DisplayMemberBinding="{Binding MusicId}" Width="50"/>
+                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="200"/>
+                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="200"/>
+                                <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="200"/>
                             </GridView>
                         </ListView.View>
+                        <!--Buttons for uploading and deleting songs-->
+
                     </ListView>
+
+                    <!-- ListView for Songs -->
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <Button x:Name="UploadSongButton" Content="Upload Song" Width="100" Margin="10 0 10 0" Visibility="Visible" Click="UploadSongButton_Click"/>
+                        <Button x:Name="DeleteSongButton" Content="Delete Song" Width="100" Visibility="Visible" Click="DeleteSongButton_Click"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
         </Grid>

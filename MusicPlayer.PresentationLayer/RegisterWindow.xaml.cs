@@ -66,7 +66,7 @@ namespace MusicPlayer.PresentationLayer
             var password = PasswordBox.Password;
             var confirmPassword = ConfirmPasswordBox.Password;
 
-         
+
             if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Please fill in all fields.");
@@ -106,7 +106,7 @@ namespace MusicPlayer.PresentationLayer
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
-            Close();       
+            Close();
         }
 
         private void LoginHyperlink_Click(object sender, RoutedEventArgs e)

@@ -12,9 +12,10 @@ namespace MusicPlayer.BLL.Services
 {
     public class UserService
     {
-        private UserRepository _repo = new();
+        private UserRepository _userRepo = new();
+        private MusicRepository _musicRepo = new();
 
-        public User? Authenticate(string username, string password) => _repo.GetOne(username, password);
+        public User? Authenticate(string username, string password) => _userRepo.GetOne(username, password);
 
         public bool Register(string fullName, string username, string password)
         {
@@ -24,13 +25,21 @@ namespace MusicPlayer.BLL.Services
             user.Password = password;
 
             //Check username tồn tại hay chưa
-            if(_repo.GetAll().FirstOrDefault(x => x.Username == username)  != null) {
+            if (_userRepo.GetAll().FirstOrDefault(x => x.Username == username) != null)
+            {
                 return false;
             }
 
-            var existingUser = _repo.RegisterUser(user);
-
-            return true;
+            return _userRepo.RegisterUser(user);
         }
+
+        public List<Music> GetAllMusicsByUsername(string username)
+        {
+            var musics = _musicRepo.GetAll();
+            var userMusics = musics.Where(m => m.User.Username == username).ToList();
+
+            return userMusics;
+        }
+
     }
 }
