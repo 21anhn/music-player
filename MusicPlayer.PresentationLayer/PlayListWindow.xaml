@@ -26,9 +26,14 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
+                    <!-- Ellipses -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,45,0,-14" Width="48">
+                        <Ellipse Fill="#ff6258" Width="10" Height="10"/>
+                        <Ellipse Fill="#ffbf2f" Width="10" Height="10" Margin="7 0"/>
+                        <Ellipse Fill="#2acb42" Width="10" Height="10"/>
+                    </StackPanel>
                     <!-- Playlist Title -->
-                    <TextBlock Text="Playlist" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" FontSize="30" Margin="25,0,25,0" Grid.Column="0"/>
+                    <TextBlock Text="Playlist" FontWeight="Bold" Foreground="White" VerticalAlignment="Top" FontSize="30" Margin="25,13,25,0" Grid.Column="0"/>
 
                     <!-- Playlist Name TextBlock and TextBox -->
                     <Border Grid.Column="1" Margin="38,20,200,21" BorderThickness="1" BorderBrush="White" CornerRadius="10">
