@@ -24,6 +24,8 @@
 
     <None Remove="imgs\background.png" />
 
+    <None Remove="imgs\icons8-search-19.png" />
+
     <None Remove="imgs\library-icon.png" />
 
     <None Remove="imgs\password-icon.png" />
@@ -50,6 +52,7 @@
   <ItemGroup>
     <Resource Include="imgs\add_library-icon.png" />
     <Resource Include="imgs\background.png" />
+    <Resource Include="imgs\icons8-search-19.png" />
     <Resource Include="imgs\library-icon.png" />
     <Resource Include="imgs\password-icon.png" />
     <Resource Include="imgs\pause-icon.png" />

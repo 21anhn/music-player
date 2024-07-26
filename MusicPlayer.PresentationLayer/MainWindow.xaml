@@ -2,25 +2,75 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="Main Window" Height="700" Width="1050" WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" Background="Transparent">
+        Title="FPT Music Player" Height="700" Width="1050" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" AllowsTransparency="True"  Background="Transparent" Loaded="Window_Loaded">
     <Border Background="Black" CornerRadius="40" MouseDown="Border_MouseDown">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="100 "/>
+                <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
-            <!--Menu-->
-            <Border Background="#282828" CornerRadius="40 0 0 40" Grid.RowSpan="2">
+            <!-- Navbar -->
+            <Border Grid.ColumnSpan="2" Background="#1e1e1e" CornerRadius="40 40 0 0">
+                <Grid Margin="20,0,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="FPT Music" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" FontSize="30" Margin="25,0,25,0"/>
+
+                    <!-- Search Box with Icon inside -->
+                    <Grid Grid.Column="1" Height="50" VerticalAlignment="Center" Margin="80,0,55,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="1" Text="Artists, Songs" Background="White" Padding="10,0,0,0" Margin="0,0,10,0" BorderBrush="Transparent" BorderThickness="0"/>
+                    </Grid>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <TextBlock x:Name="WelcomeNameTextBlock" Text="Name" FontSize="18" Foreground="White" VerticalAlignment="Center" Margin="0 10"/>
+                        <Button x:Name="LogoutButton" Content="Log Out" Background="#17AE38" Width="110" Margin="10 0 0 0" Height="38" Click="LogoutButton_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          ContentSource="Content">
+                                            <!-- Use TextBlock to customize text appearance -->
+                                            <ContentPresenter.ContentTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}"
+                                                               Foreground="Black"
+                                                               FontWeight="Bold"
+                                                               FontSize="16" />
+                                                </DataTemplate>
+                                            </ContentPresenter.ContentTemplate>
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Menu -->
+            <Border Background="#282828" CornerRadius="0 0 0 40" Grid.Row="1" Grid.RowSpan="2">
                 <StackPanel Margin="0 30 0 0">
-                    <!--Ellipses-->
+                    <!-- Ellipses -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="63 10 0 10">
                         <Ellipse Fill="#ff6258" Width="10" Height="10"/>
                         <Ellipse Fill="#ffbf2f" Width="10" Height="10" Margin="7 0"/>
@@ -29,36 +79,47 @@
 
                     <TextBlock Text="Your Library" Style="{StaticResource menuTitle}"/>
 
-                    <Button Style="{StaticResource menuButton}" Background="#02be68" Foreground="White">
+                    <Button x:Name="HomeButton" Style="{StaticResource menuButton}" Background="#02be68" Foreground="White">
                         <Grid>
                             <TextBlock Text="Home" Margin="0 0 0 2"/>
                             <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}"/>
                         </Grid>
                     </Button>
 
-                    <Button Style="{StaticResource menuButton}" >
+                    <Button Style="{StaticResource menuButton}">
                         <Grid>
                             <TextBlock Text="Playlist" Margin="0 0 0 2"/>
                             <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}" Visibility="Visible"/>
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource menuButton}">
-                        <Grid>
-                            <TextBlock Text="Play" Margin="0 0 0 2"/>
-                            <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}"/>
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource menuButton}">
-                        <Grid>
-                            <TextBlock Text="Home" Margin="0 0 0 2"/>
-                            <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}"/>
-                        </Grid>
-                    </Button>
-                </StackPanel>
 
+                    <Button x:Name="SongsButton" Style="{StaticResource menuButton}" Click="SongsButton_Click">
+                        <Grid>
+                            <TextBlock Text="Songs" Margin="0 0 0 2"/>
+                            <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}"/>
+                        </Grid>
+                    </Button>
+
+                </StackPanel>
             </Border>
 
-        </Grid>
+            <!-- Music Section -->
+            <Border x:Name="MusicSection" Grid.Column="1" Grid.Row="1" Background="#282828" CornerRadius="40" Margin="40 60 10 0">
+                <StackPanel Margin="20">
+                    <TextBlock x:Name="SectionTitle" Foreground="White" Text="Home" Style="{StaticResource titleText}" Margin="20"/>
 
+                    <!-- ListView for Songs -->
+                    <ListView x:Name="SongsListView" Visibility="Collapsed" Margin="10">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="200"/>
+                                <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Artist}" Width="200"/>
+                                <GridViewColumn Header="Album" DisplayMemberBinding="{Binding Album}" Width="200"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Border>
 </Window>

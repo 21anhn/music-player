@@ -23,6 +23,11 @@ namespace MusicPlayer.BLL.Services
             user.Username = username;
             user.Password = password;
 
+            //Check username tồn tại hay chưa
+            if(_repo.GetAll().FirstOrDefault(x => x.Username == username)  != null) {
+                return false;
+            }
+
             var existingUser = _repo.RegisterUser(user);
 
             return true;

@@ -15,6 +15,7 @@ namespace MusicPlayer.PresentationLayer
         public RegisterWindow()
         {
             InitializeComponent();
+            WindowStyle = WindowStyle.None;
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -50,6 +51,7 @@ namespace MusicPlayer.PresentationLayer
                 }
                 else
                 {
+                    EmailTextBox.Text = "";
                     MessageBox.Show("Registration failed. The username might be taken.");
                 }
             }

@@ -7,6 +7,8 @@ public partial class Music
 {
     public int MusicId { get; set; }
 
+    public string? ArtistName { get; set; }
+
     public string? MusicName { get; set; }
 
     public string? Link { get; set; }

@@ -23,5 +23,11 @@ namespace MusicPlayer.DAL.Repositories
             _context = new();
             return _context.Users.FirstOrDefault(x => x.Username.ToLower() == username.ToLower() && x.Password == password);
         }
+
+        public List<User> GetAll()
+        {
+            _context = new();
+            return _context.Users.ToList();
+        }
     }
 }

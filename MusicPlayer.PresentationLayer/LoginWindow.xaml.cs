@@ -27,6 +27,7 @@ namespace MusicPlayer.PresentationLayer
         public LoginWindow()
         {
             InitializeComponent();
+            WindowStyle = WindowStyle.None;
         }
 
         private void UsernameTextBlock_MouseDown(object sender, MouseButtonEventArgs e) => UserNameTextBox.Focus();
@@ -67,7 +68,7 @@ namespace MusicPlayer.PresentationLayer
             }
 
             MainWindow m = new();
-            //m.CurrentAccount = account;
+            m.CurrentUser = account;
             m.Show();
             this.Close();
         }
