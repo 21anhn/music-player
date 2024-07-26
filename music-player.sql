@@ -25,6 +25,8 @@ CREATE TABLE Music (
 	[status] bit
 )
 
+ALTER TABLE Music ADD artistName NVARCHAR(MAX);
+
 CREATE TABLE PlaylistMusic(
 	id INT IDENTITY(1, 1) PRIMARY KEY,
 	musicId INT REFERENCES Music(musicId),
