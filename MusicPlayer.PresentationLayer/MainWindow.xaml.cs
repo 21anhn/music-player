@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
 using MusicPlayer.BLL.Services;
@@ -17,7 +19,9 @@ namespace MusicPlayer.PresentationLayer
     {
         private MusicService _service = new();
         private UserService _userService = new();
+        private MediaPlayer _mediaPlayer = new MediaPlayer();
         public User CurrentUser { get; set; }
+
 
 
         public MainWindow()
@@ -36,10 +40,9 @@ namespace MusicPlayer.PresentationLayer
 
         private void SongsButton_Click(object sender, RoutedEventArgs e)
         {
-            SectionTitle.Text = "Songs";
-            MusicsListView.Visibility = Visibility.Visible;
-            UploadSongButton.Visibility = Visibility.Visible;
-            DeleteSongButton.Visibility = Visibility.Visible;
+            SongsView(Visibility.Visible);
+            PlaylistView(Visibility.Collapsed);
+            LoadData();
         }
 
         private void UploadSongButton_Click(object sender, RoutedEventArgs e)
@@ -57,7 +60,7 @@ namespace MusicPlayer.PresentationLayer
                 // Đọc metadata từ file MP3
                 var tagFile = TagLib.File.Create(sourcePath);
                 var musicName = tagFile.Tag.Title ?? "Unknown Title";
-                var artistNames = tagFile.Tag.Artists;
+                var artistNames = tagFile.Tag.Performers;
                 var artistName = artistNames.Length > 0 ? string.Join(", ", artistNames) : "Unknown Artist";
 
                 var storagePath = GetStoragePath();
@@ -116,6 +119,27 @@ namespace MusicPlayer.PresentationLayer
             LoadData();
         }
 
+        private void SongsView(Visibility visibility)
+        {
+            if (visibility.Equals(Visibility.Visible))
+            {
+                SectionTitle.Text = "Songs";
+            }
+            MusicsListView.Visibility = visibility;
+            UploadSongButton.Visibility = visibility;
+            DeleteSongButton.Visibility = visibility;
+        }
+
+        private void PlaylistView(Visibility visibility)
+        {
+            if (visibility.Equals(Visibility.Visible))
+            {
+                SectionTitle.Text = "Playlist";
+            }
+            PlaylistSection.Visibility = visibility;
+            LoadPlaylists();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (CurrentUser == null)
@@ -124,28 +148,33 @@ namespace MusicPlayer.PresentationLayer
             }
             WelcomeNameTextBlock.Text = CurrentUser.FullName;
             SectionTitle.Text = "Home";
-            MusicsListView.Visibility = Visibility.Collapsed;
-            UploadSongButton.Visibility = Visibility.Collapsed;
-            DeleteSongButton.Visibility = Visibility.Collapsed;
+            SongsView(Visibility.Collapsed);
+            PlaylistView(Visibility.Collapsed);
             LoadData();
+            LoadPlaylists();
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             SectionTitle.Text = "Home";
-            MusicsListView.Visibility = Visibility.Collapsed;
-            UploadSongButton.Visibility = Visibility.Collapsed;
-            DeleteSongButton.Visibility = Visibility.Collapsed;
+            SongsView(Visibility.Collapsed);
+            PlaylistView(Visibility.Collapsed);
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
+            _mediaPlayer.Close();
             LoginWindow loginWindow = new();
             loginWindow.Show();
             Close();
+
         }
 
-
+        private void LoadPlaylists()
+        {
+            PlaylistsListView.ItemsSource = null;
+            PlaylistsListView.ItemsSource = _userService.GettAllPlaylistByUsername(CurrentUser.Username);
+        }
 
         private void LoadData()
         {
@@ -164,14 +193,73 @@ namespace MusicPlayer.PresentationLayer
 
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-           
+            PlaylistView(Visibility.Visible);
+            SongsView(Visibility.Collapsed);
         }
 
         private void CreatePlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             PlayListWindow playListWindow = new PlayListWindow();
-            playListWindow.Show();
+            playListWindow.CurrentUser = CurrentUser;
+            playListWindow.ShowDialog();
+            LoadPlaylists();
+        }
 
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                var music = button.DataContext as Music; // Assuming 'Music' is your model
+                if (music != null)
+                {
+                    SongNameTextBlock.Text = music.MusicName;
+                    ArtistNameTextBlock.Text = music.ArtistName;
+                    MusicPlayerControls.Visibility = Visibility.Visible;
+
+                    // Additional logic to play the music
+                    PlayMusic(music);
+                }
+            }
+        }
+
+        private void PlayMusic(Music music)
+        {
+            if (File.Exists(music.Link))
+            {
+                _mediaPlayer.Open(new Uri(music.Link));
+                _mediaPlayer.Play();
+                MessageBox.Show($"Playing {music.MusicName} by {music.ArtistName}");
+            }
+            else
+            {
+                MessageBox.Show("Music file not found!");
+            }
+        }
+
+        // Event handlers for music controls
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Logic to play previous song
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (PauseButton.Content.ToString() == "Pause")
+            {
+                _mediaPlayer.Pause();
+                PauseButton.Content = "Play";
+            }
+            else
+            {
+                _mediaPlayer.Play();
+                PauseButton.Content = "Pause";
+            }
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Logic to play next song
         }
     }
 }

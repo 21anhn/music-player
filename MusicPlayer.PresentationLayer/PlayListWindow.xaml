@@ -4,7 +4,7 @@
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="PlayListWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        AllowsTransparency="True" Background="Transparent" WindowStyle="None">
+        AllowsTransparency="True" Background="Transparent" WindowStyle="None" Loaded="Window_Loaded_1">
     <Border Background="Black" CornerRadius="20" MouseDown="Border_MouseDown">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -99,13 +99,12 @@
             <Border x:Name="MusicSection" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#282828" CornerRadius="20" Margin="20">
                 <StackPanel Margin="20">
                     <TextBlock x:Name="SectionTitle" Foreground="White" Text="Songs in Playlist" FontSize="24" FontWeight="Bold" Margin="20"/>
-                    <ListView x:Name="MusicsListView" Height="300" Width="750">
+                    <ListView x:Name="MusicsListView" Height="300" Width="750" SelectionMode="Multiple">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Music Id" DisplayMemberBinding="{Binding MusicId}" Width="50"/>
-                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="200"/>
-                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="200"/>
-                                <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="200"/>
+                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="300"/>
+                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="400"/>
                             </GridView>
                         </ListView.View>
                     </ListView>

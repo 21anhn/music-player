@@ -14,6 +14,7 @@ namespace MusicPlayer.BLL.Services
     {
         private UserRepository _userRepo = new();
         private MusicRepository _musicRepo = new();
+        private PlaylistRepository _plRepo = new();
 
         public User? Authenticate(string username, string password) => _userRepo.GetOne(username, password);
 
@@ -41,5 +42,10 @@ namespace MusicPlayer.BLL.Services
             return userMusics;
         }
 
+        public List<Playlist> GettAllPlaylistByUsername(string username)
+        {
+            var playlists = _plRepo.GetAll();
+            return playlists.Where(p => p.User.Username == username).ToList();
+        }
     }
 }
