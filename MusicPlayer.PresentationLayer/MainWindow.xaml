@@ -4,7 +4,8 @@
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="FPT Music Player" Height="700" Width="1050" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" AllowsTransparency="True"  Background="Transparent" Loaded="Window_Loaded">
-    <Border Background="Black" CornerRadius="40" MouseDown="Border_MouseDown">
+
+    <Border Background="Black" MouseDown="Border_MouseDown">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220"/>
@@ -18,27 +19,30 @@
             </Grid.RowDefinitions>
 
             <!-- Navbar -->
-            <Border Grid.ColumnSpan="2" Background="#1e1e1e" CornerRadius="40 40 0 0">
+            <Border Grid.ColumnSpan="2">
                 <Grid Margin="20,0,20,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="500"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="FPT Music" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" FontSize="30" Margin="25,0,25,0"/>
 
                     <!-- Search Box with Icon inside -->
-                    <Grid Grid.Column="1" Height="50" VerticalAlignment="Center" Margin="80,0,55,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="1" Text="Artists, Songs" Background="White" Padding="10,0,0,0" Margin="0,0,10,0" BorderBrush="Transparent" BorderThickness="0"/>
-                    </Grid>
-
+                    <Border Grid.Column="1" Background="White" CornerRadius="20" VerticalAlignment="Center" Margin="80,0,55,0" Height="50">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="&#xf002;" FontSize="20" FontFamily="/#Font Awesome 6 Pro Solid" Foreground="Black"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <TextBlock x:Name="SearchTextBlock" Text="Artists, Songs" FontSize="20" Background="Transparent" Foreground="Black" VerticalAlignment="Center" Grid.Column="1" MouseDown="SearchTextBlock_MouseDown"/>
+                            <TextBox x:Name="SearchTextBox" Background="Transparent" Margin="0,0,10,0" BorderBrush="Transparent" BorderThickness="0" Grid.Column="1" FontWeight="Normal" TextChanged="SearchTextBox_TextChanged"/>
+                        </Grid>
+                    </Border>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <TextBlock x:Name="WelcomeNameTextBlock" Text="Name" FontSize="18" Foreground="White" VerticalAlignment="Center" Margin="0 10"/>
+                        <TextBlock x:Name="WelcomeNameTextBlock" Text="Name" FontSize="18" Foreground="White" VerticalAlignment="Center" Margin="0 10 5 10"/>
                         <Button x:Name="LogoutButton" Content="Log Out" Background="#17AE38" Width="110" Margin="10 0 0 0" Height="38" Click="LogoutButton_Click">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
@@ -68,18 +72,11 @@
             </Border>
 
             <!-- Menu -->
-            <Border Background="#282828" CornerRadius="0 0 0 40" Grid.Row="1" Grid.RowSpan="2">
-                <StackPanel Margin="0 30 0 0">
-                    <!-- Ellipses -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="63 10 0 10">
-                        <Ellipse Fill="#ff6258" Width="10" Height="10"/>
-                        <Ellipse Fill="#ffbf2f" Width="10" Height="10" Margin="7 0"/>
-                        <Ellipse Fill="#2acb42" Width="10" Height="10"/>
-                    </StackPanel>
+            <Border Background="#282828" CornerRadius="10" Grid.Row="1" Margin="10 0 0 0">
+                <StackPanel>
 
                     <TextBlock Text="Your Library" Style="{StaticResource menuTitle}"/>
-
-                    <Button x:Name="HomeButton" Style="{StaticResource menuButton}" Background="#02be68" Foreground="White" Click="HomeButton_Click">
+                    <Button x:Name="HomeButton" Width="183" Style="{StaticResource menuButton}" Background="#02be68" Foreground="White" Click="HomeButton_Click">
                         <Grid>
                             <TextBlock Text="Home" Margin="0 0 0 2"/>
                             <Icon:PackIconMaterial Style="{StaticResource menuButtonIcon}"/>
@@ -93,7 +90,6 @@
                         </Grid>
                     </Button>
 
-
                     <Button x:Name="SongsButton" Style="{StaticResource menuButton}" Click="SongsButton_Click">
                         <Grid>
                             <TextBlock Text="Songs" Margin="0 0 0 2"/>
@@ -105,7 +101,7 @@
             </Border>
 
             <!-- Music Section -->
-            <Border x:Name="MusicSection" Grid.Column="1" Grid.Row="1" Background="#282828" CornerRadius="40" Margin="40 60 10 0">
+            <Border x:Name="MusicSection" Grid.Column="1" Grid.Row="1" Background="#282828" CornerRadius="10" Margin="10,0,10,0">
                 <StackPanel Margin="20">
                     <TextBlock x:Name="SectionTitle" Foreground="White" Text="Home" Style="{StaticResource titleText}" Margin="20"/>
                     <ListView x:Name="MusicsListView" Visibility="Collapsed" Height="155" Width="725">
@@ -174,26 +170,82 @@
                 </StackPanel>
             </Border>
 
-                <StackPanel  x:Name="MusicPlayerControls"  Background="#333333" Orientation="Horizontal" Visibility="Collapsed" Margin="40,25,35,25" Grid.Row="2" Grid.Column="1">
-                    <TextBlock x:Name="SongNameTextBlock" Text="Song Name" Foreground="White" FontSize="18" VerticalAlignment="Center" Margin="10"/>
-                    <TextBlock x:Name="ArtistNameTextBlock" Text="Artist Name" Foreground="Gray" FontSize="16" VerticalAlignment="Center" Margin="10"/>
+            <!-- Down Section -->
+            <Grid Height="90" VerticalAlignment="Top" Margin="0,10,0,0" Grid.ColumnSpan="2" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
+                <Grid Grid.Column="0">
+                    <TextBlock x:Name="SongNameTextBlock" Text="Tille" Foreground="White" FontSize="20" VerticalAlignment="Top" Margin="10,17,0,0" Height="28" Padding="10 0" Width="340" TextWrapping="NoWrap"/>
+                    <TextBlock  x:Name="ArtistNameTextBlock" Text="Artist" Foreground="White" FontSize="14" VerticalAlignment="Top" Margin="10,45,0,0" Padding="10 0"  Width="340"/>
+                </Grid>
+
+                <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0">
-                        <Button x:Name="PreviousButton" Content="Previous" Width="50" Height="50" Click="PreviousButton_Click"/>
-                        <Button x:Name="PauseButton" Content="Pause" Width="50" Height="50" Click="PauseButton_Click"/>
-                        <Button x:Name="NextButton" Content="Next" Width="50" Height="50" Click="NextButton_Click"/>
+                        <Grid HorizontalAlignment="Center" Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Music Control Buttons -->
+                            <Button BorderBrush="Transparent" Grid.Column="0" Style="{StaticResource MusicButton}">
+                                <TextBlock Text="&#xf074;" FontSize="15" Foreground="White" FontFamily="/#Font Awesome 6 Pro Solid"/>
+                            </Button>
+                            <Button x:Name="PreviousButton" Grid.Column="1" Style="{StaticResource MusicButton}" Click="PreviousButton_Click">
+                                <TextBlock Text="&#xf048;" FontSize="20" Foreground="White" FontFamily="/#Font Awesome 6 Pro Solid"/>
+                            </Button>
+                            <Button x:Name="PlayButton" Grid.Column="2" Visibility="Visible" Style="{StaticResource MusicButton}" Click="PlayButton_Click">
+                                <TextBlock Text="&#xf144;" FontSize="40" Foreground="White" FontFamily="/#Font Awesome 6 Pro Solid"/>
+                            </Button>
+                            <Button x:Name="PauseButton" Grid.Column="2" Visibility="Collapsed" Style="{StaticResource MusicButton}" Click="PauseButton_Click">
+                                <TextBlock Text="&#xf28b;" FontSize="40" Foreground="White" FontFamily="/#Font Awesome 6 Pro Solid"/>
+                            </Button>
+                            <Button x:Name="NextButton" Grid.Column="3" Style="{StaticResource MusicButton}" Click="NextButton_Click">
+                                <TextBlock Text="&#xf051;" FontSize="20" Foreground="White" FontFamily="/#Font Awesome 6 Pro Solid"/>
+                            </Button>
+                            <Button Grid.Column="4" Style="{StaticResource MusicButton}">
+                                <TextBlock Text="&#xf363;" FontSize="15" Foreground="White" FontFamily="/#Font Awesome 6 Pro Solid"/>
+                            </Button>
+                        </Grid>
                     </StackPanel>
 
-                    <TextBlock x:Name="CurrentTimeTextBlock" Text="0:00" Foreground="White" FontSize="16" VerticalAlignment="Center" Margin="0"/>
-                    <TextBlock x:Name="TimeMusicBlock" Text="/ 3:30" Foreground="White" FontSize="16" VerticalAlignment="Center" Margin="6"/>
+                    <!-- Slider and Time Display -->
+                    <TextBlock x:Name="CurrentTimeTextBlock" Text="0:00" Foreground="White" FontSize="10" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,1"/>
+                    <Slider  x:Name="PositionSlider" Grid.Row="1" Width="250" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionEnd="{Binding ElementName=PositionSlider, Path=Value}" Style="{DynamicResource SliderStyle1}" IsSelectionRangeEnabled="True"   PreviewMouseDown="PositionSlider_PreviewMouseDown" ValueChanged="PositionSlider_ValueChanged"/>
+                    <TextBlock x:Name="TotalTimeTextBlock" Text="0:00" Foreground="White" FontSize="10" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,1"/>
 
-                <Slider x:Name="VolumeSlider" Width="100" VerticalAlignment="Center" Margin="10"/>
-                </StackPanel>
+                </Grid>
 
-
-
-
-
+                <!-- Volume Control -->
+                <Grid VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="2" Height="90">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="340" Height="90">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button  Grid.Column="1" Style="{StaticResource MusicButton}">
+                            <TextBlock Text="&#xf028;" FontSize="20" Foreground="White" FontFamily="/#Font Awesome 6 Pro Solid"/>
+                        </Button>
+                        <Slider x:Name="VolumeSlider" Width="100" VerticalAlignment="Center" Margin="10" Grid.Column="2"/>
+                    </Grid>
+                </Grid>
+            </Grid>
         </Grid>
     </Border>
 </Window>

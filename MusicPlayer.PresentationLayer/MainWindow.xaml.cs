@@ -4,7 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using MusicPlayer.BLL.Services;
 using MusicPlayer.DAL;
@@ -28,6 +31,18 @@ namespace MusicPlayer.PresentationLayer
         {
             InitializeComponent();
             WindowStyle = WindowStyle.None;
+        }
+
+
+        private void SearchTextBlock_MouseDown(object sender, MouseButtonEventArgs e) => SearchTextBox.Focus();
+
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(!String.IsNullOrEmpty(SearchTextBox.Text) && SearchTextBox.Text.Length > 0)
+                SearchTextBlock.Visibility = Visibility.Collapsed;
+            else
+                SearchTextBlock.Visibility = Visibility.Visible;
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -215,11 +230,27 @@ namespace MusicPlayer.PresentationLayer
                 {
                     SongNameTextBlock.Text = music.MusicName;
                     ArtistNameTextBlock.Text = music.ArtistName;
-                    MusicPlayerControls.Visibility = Visibility.Visible;
 
                     // Additional logic to play the music
                     PlayMusic(music);
                 }
+                else if (_mediaPlayer.CanPause)
+                {
+                    _mediaPlayer.Play();
+                }
+                PlayButton.Visibility = Visibility.Collapsed;
+                PauseButton.Visibility = Visibility.Visible;
+            }
+
+        }
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (PauseButton.Visibility == Visibility.Visible)
+            {
+                _mediaPlayer.Pause();
+
+                PauseButton.Visibility = Visibility.Collapsed;
+                PlayButton.Visibility = Visibility.Visible;
             }
         }
 
@@ -228,7 +259,19 @@ namespace MusicPlayer.PresentationLayer
             if (File.Exists(music.Link))
             {
                 _mediaPlayer.Open(new Uri(music.Link));
+                _mediaPlayer.MediaOpened += (s, e) =>
+                {
+                    if (_mediaPlayer.NaturalDuration.HasTimeSpan)
+                    {
+                        var duration = _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                        PositionSlider.Maximum = duration;
+                        UpdateTotalTime();
+                    }
+                };
                 _mediaPlayer.Play();
+
+                // Start the timer to update the slider value
+                StartPlaybackTimer();
                 MessageBox.Show($"Playing {music.MusicName} by {music.ArtistName}");
             }
             else
@@ -237,29 +280,68 @@ namespace MusicPlayer.PresentationLayer
             }
         }
 
+        private DispatcherTimer _timer;
+
+        private void StartPlaybackTimer()
+        {
+            if (_timer == null)
+            {
+                _timer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(1)
+                };
+                _timer.Tick += (s, e) =>
+                {
+                    if (_mediaPlayer.NaturalDuration.HasTimeSpan)
+                    {
+                        PositionSlider.Value = _mediaPlayer.Position.TotalSeconds;
+                        CurrentTimeTextBlock.Text = _mediaPlayer.Position.ToString(@"mm\:ss");
+                    }
+                };
+                _timer.Start();
+            }
+        }
+
+        // Event handler for slider value change
+        private void PositionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_mediaPlayer.NaturalDuration.HasTimeSpan && !_mediaPlayer.IsBuffering)
+            {
+                _mediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
+            }
+        }
+        private void PositionSlider_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            Point mousePosition = e.GetPosition(PositionSlider);
+            double newValue = (mousePosition.X / PositionSlider.ActualWidth) * PositionSlider.Maximum;
+            PositionSlider.Value = newValue;
+
+            if (_mediaPlayer.NaturalDuration.HasTimeSpan)
+            {
+                _mediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
+            }
+        }
+        private void UpdateTotalTime()
+        {
+            if (_mediaPlayer.NaturalDuration.HasTimeSpan)
+            {
+                TotalTimeTextBlock.Text = _mediaPlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+            }
+        }
         // Event handlers for music controls
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
             // Logic to play previous song
         }
 
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (PauseButton.Content.ToString() == "Pause")
-            {
-                _mediaPlayer.Pause();
-                PauseButton.Content = "Play";
-            }
-            else
-            {
-                _mediaPlayer.Play();
-                PauseButton.Content = "Pause";
-            }
-        }
+ 
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             // Logic to play next song
         }
+
+       
     }
 }

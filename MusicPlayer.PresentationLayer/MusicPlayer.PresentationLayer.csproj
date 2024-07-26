@@ -21,6 +21,7 @@
     <ProjectReference Include="..\MusicPlayer.BLL\MusicPlayer.BLL.csproj">
       <Private>True</Private>
     </ProjectReference>
+    <None Remove="Font Awesome 6 Pro Solid.otf" />
 
     <None Remove="imgs\add_library-icon.png" />
 
@@ -52,6 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Font Awesome 6 Pro Solid.otf" />
     <Resource Include="imgs\add_library-icon.png" />
     <Resource Include="imgs\background.png" />
     <Resource Include="imgs\icons8-search-19.png" />
