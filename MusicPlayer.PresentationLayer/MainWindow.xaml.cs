@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -24,6 +25,9 @@ namespace MusicPlayer.PresentationLayer
         private UserService _userService = new();
         private MediaPlayer _mediaPlayer = new MediaPlayer();
         private DispatcherTimer _timer;
+        private int _currentMusicIndex = -1; // Chỉ số bài hát hiện tại
+        private List<Music> _playlist = new List<Music>(); // Danh sách bài hát
+        private bool _isReplayEnabled = false; // Trạng thái phát lại
         public User CurrentUser { get; set; }
 
 
@@ -42,7 +46,7 @@ namespace MusicPlayer.PresentationLayer
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(!String.IsNullOrEmpty(SearchTextBox.Text) && SearchTextBox.Text.Length > 0)
+            if (!String.IsNullOrEmpty(SearchTextBox.Text) && SearchTextBox.Text.Length > 0)
                 SearchTextBlock.Visibility = Visibility.Collapsed;
             else
                 SearchTextBlock.Visibility = Visibility.Visible;
@@ -196,8 +200,10 @@ namespace MusicPlayer.PresentationLayer
 
         private void LoadData()
         {
+            var musics = _userService.GetAllMusicsByUsername(CurrentUser.Username);
+            _playlist = musics.ToList();
             MusicsListView.ItemsSource = null;
-            MusicsListView.ItemsSource = _userService.GetAllMusicsByUsername(CurrentUser.Username);
+            MusicsListView.ItemsSource = _playlist;
         }
 
         private string? GetStoragePath()
@@ -234,7 +240,7 @@ namespace MusicPlayer.PresentationLayer
                     SongNameTextBlock.Text = music.MusicName;
                     ArtistNameTextBlock.Text = music.ArtistName;
 
-                    // Additional logic to play the music
+                    //Play music
                     PlayMusic(music);
                 }
                 else if (_mediaPlayer.CanPause)
@@ -271,10 +277,26 @@ namespace MusicPlayer.PresentationLayer
                         UpdateTotalTime();
                     }
                 };
+
+                _mediaPlayer.MediaEnded += (s, e) =>
+                {
+                    if (_isReplayEnabled)
+                    {
+                        // Nếu đang bật chế độ phát lại, phát lại bài hát hiện tại
+                        PlayMusic(music);
+                    }
+                    else
+                    {
+                        // Nếu không, phát bài hát tiếp theo
+                        PlayNextSong();
+                    }
+                };
+
                 _mediaPlayer.Play();
 
                 // Start the timer to update the slider value
                 StartPlaybackTimer();
+                _currentMusicIndex = _playlist.IndexOf(music); // Cập nhật chỉ số bài hát hiện tại
                 MessageBox.Show($"Playing {music.MusicName} by {music.ArtistName}");
             }
             else
@@ -331,21 +353,81 @@ namespace MusicPlayer.PresentationLayer
             }
         }
         // Event handlers for music controls
-        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+
+        private void PlayNextSong()
         {
-            // Logic to play previous song
+            if (_playlist.Count == 0) return; // Không có bài hát để phát
+
+            // Tìm bài hát tiếp theo
+            _currentMusicIndex = (_currentMusicIndex + 1) % _playlist.Count;
+            var nextMusic = _playlist[_currentMusicIndex];
+            ChangeNameAndTitleTextBox(nextMusic);
+            PlayMusic(nextMusic);
         }
 
- 
+        private void PlayPreviousSong()
+        {
+            if (_playlist.Count == 0) return; // Không có bài hát để phát
+
+            // Tìm bài hát trước đó
+            _currentMusicIndex = (_currentMusicIndex - 1 + _playlist.Count) % _playlist.Count;
+            var previousMusic = _playlist[_currentMusicIndex];
+            ChangeNameAndTitleTextBox(previousMusic);
+            PlayMusic(previousMusic);
+        }
+
+        private void PlayRandomSong()
+        {
+            if (_playlist.Count == 0) return; // Không có bài hát để phát
+
+            // Tạo một chỉ số ngẫu nhiên
+            Random random = new Random();
+            _currentMusicIndex = random.Next(_playlist.Count);
+            var randomMusic = _playlist[_currentMusicIndex];
+            ChangeNameAndTitleTextBox(randomMusic);
+            PlayMusic(randomMusic);
+        }
+
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            PlayPreviousSong();
+            ChangeIconButtonInPlayMusic();
+        }
+
+
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            // Logic to play next song
+            PlayNextSong();
+            ChangeIconButtonInPlayMusic();
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _mediaPlayer.Volume = VolumeSlider.Value; 
+            _mediaPlayer.Volume = VolumeSlider.Value;
+        }
+        private void RandomButton_Click(object sender, RoutedEventArgs e)
+        {
+            PlayRandomSong();
+            ChangeIconButtonInPlayMusic();
+        }
+
+        private void ChangeNameAndTitleTextBox(Music music)
+        {
+            SongNameTextBlock.Text = music.MusicName;
+            ArtistNameTextBlock.Text = music.ArtistName;
+        }
+
+        private void ChangeIconButtonInPlayMusic()
+        {
+            PauseButton.Visibility = Visibility.Visible;
+            PlayButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void ReplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            _isReplayEnabled = !_isReplayEnabled; // Chuyển đổi trạng thái phát lại
+            //ReplayButton.Content = _isReplayEnabled ? "Replay On" : "Replay Off"; // Cập nhật nội dung nút
         }
     }
 }
