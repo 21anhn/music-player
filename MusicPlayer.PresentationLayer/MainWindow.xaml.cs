@@ -64,6 +64,7 @@ namespace MusicPlayer.PresentationLayer
         {
             SongsView(Visibility.Visible);
             PlaylistView(Visibility.Collapsed);
+            HomeView(Visibility.Collapsed);
             LoadData();
         }
 
@@ -140,6 +141,14 @@ namespace MusicPlayer.PresentationLayer
             _service.DeleteMusic(music);
             LoadData();
         }
+        private void HomeView(Visibility visibility)
+        {
+            if (visibility.Equals(Visibility.Visible))
+            {
+                SectionTitle.Text = "Home";
+            }
+            HomeImgWrapPanel.Visibility = visibility;
+        }
 
         private void SongsView(Visibility visibility)
         {
@@ -181,6 +190,7 @@ namespace MusicPlayer.PresentationLayer
             SectionTitle.Text = "Home";
             SongsView(Visibility.Collapsed);
             PlaylistView(Visibility.Collapsed);
+            HomeView(Visibility.Visible);
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
@@ -219,6 +229,7 @@ namespace MusicPlayer.PresentationLayer
         {
             PlaylistView(Visibility.Visible);
             SongsView(Visibility.Collapsed);
+            HomeView(Visibility.Collapsed);
         }
 
         private void CreatePlaylistButton_Click(object sender, RoutedEventArgs e)

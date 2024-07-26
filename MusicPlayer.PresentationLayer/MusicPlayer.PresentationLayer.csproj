@@ -22,12 +22,14 @@
       <Private>True</Private>
     </ProjectReference>
     <None Remove="Font Awesome 6 Pro Solid.otf" />
+    <None Remove="home.png" />
 
     <None Remove="imgs\background.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Font Awesome 6 Pro Solid.otf" />
+    <Resource Include="home.png" />
     <Resource Include="imgs\background.png" />
 
   </ItemGroup>
