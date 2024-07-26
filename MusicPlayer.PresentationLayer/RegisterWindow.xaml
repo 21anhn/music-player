@@ -56,15 +56,7 @@
             </Border>
 
             <!-- Login Button -->
-            <Button x:Name="RegisterButton" Width="164" Height="40" VerticalAlignment="Top" Margin="0,405,0,0" HorizontalAlignment="Center" Background="#0DAB09" Foreground="White" FontFamily="Poppins-Bold" FontSize="12" FontWeight="Bold" Content="REGISTER" BorderThickness="0" Click="RegisterButton_Click" >
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+            <Button x:Name="RegisterButton" Content="REGISTER" Style="{StaticResource LoginButtonStyle}" Click="RegisterButton_Click" Margin="0,400,0,0"/>
 
             <!-- Login Label -->
             <Label VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,459,0,0" Foreground="White"
@@ -78,7 +70,7 @@
                 </TextBlock>
             </Label>
             <!-- Exit Button -->
-            <Button x:Name="ExitButton" Width="59" Height="47" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Click="ExitButton_Click" Margin="0,-62,-291,0">
+            <Button x:Name="ExitButton" Width="59" Height="47" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Click="ExitButton_Click" Margin="0,-63,-309,0">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Grid>

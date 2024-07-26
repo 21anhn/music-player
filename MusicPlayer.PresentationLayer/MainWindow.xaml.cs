@@ -23,6 +23,7 @@ namespace MusicPlayer.PresentationLayer
         private MusicService _service = new();
         private UserService _userService = new();
         private MediaPlayer _mediaPlayer = new MediaPlayer();
+        private DispatcherTimer _timer;
         public User CurrentUser { get; set; }
 
 
@@ -31,6 +32,8 @@ namespace MusicPlayer.PresentationLayer
         {
             InitializeComponent();
             WindowStyle = WindowStyle.None;
+            VolumeSlider.ValueChanged += VolumeSlider_ValueChanged;
+            _mediaPlayer.Volume = VolumeSlider.Value;
         }
 
 
@@ -280,8 +283,6 @@ namespace MusicPlayer.PresentationLayer
             }
         }
 
-        private DispatcherTimer _timer;
-
         private void StartPlaybackTimer()
         {
             if (_timer == null)
@@ -342,6 +343,9 @@ namespace MusicPlayer.PresentationLayer
             // Logic to play next song
         }
 
-       
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _mediaPlayer.Volume = VolumeSlider.Value; 
+        }
     }
 }
