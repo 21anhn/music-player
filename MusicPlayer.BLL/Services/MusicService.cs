@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MusicPlayer.DAL;
+﻿using Microsoft.IdentityModel.Tokens;
 using MusicPlayer.DAL.Models;
 using MusicPlayer.DAL.Repositories;
 
@@ -14,6 +9,7 @@ namespace MusicPlayer.BLL.Services
 
         private MusicRepository _repo = new();
         private MusicPlaylistService _msService = new();
+        private UserService _userService = new();
 
         public void AddMusic(Music m)
         {
@@ -45,6 +41,17 @@ namespace MusicPlayer.BLL.Services
                                                .ToList();
 
             return musicsNotInPlaylist;
+        }
+
+        public List<Music> SearchMusicsBySongNameOrArtistName(string username, string keyword)
+        {
+            var list = _userService.GetAllMusicsByUsername(username);
+            if (!keyword.IsNullOrEmpty())
+            {
+                list = list.Where(m => (m.MusicName.ToLower().Contains(keyword.ToLower()) || (m.ArtistName.ToLower().Contains(keyword.ToLower())))).ToList();
+
+            }
+            return list;
         }
     }
 }

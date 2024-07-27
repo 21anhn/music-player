@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MusicPlayer.DAL.Models;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MusicPlayer.DAL.Models;
 
 namespace MusicPlayer.DAL.Repositories
 {

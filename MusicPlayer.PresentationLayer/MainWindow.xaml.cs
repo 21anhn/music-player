@@ -1,17 +1,13 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using MusicPlayer.BLL.Services;
-using MusicPlayer.DAL;
 using MusicPlayer.DAL.Models;
 
 namespace MusicPlayer.PresentationLayer
@@ -64,9 +60,11 @@ namespace MusicPlayer.PresentationLayer
             var searchText = SearchTextBox.Text.Trim();
             if (!string.IsNullOrEmpty(searchText))
             {
-                // Implement your search logic here
-                // For example: search in the music list
-                MessageBox.Show($"Searching for: {searchText}");
+                MusicsListView.ItemsSource = null;
+                MusicsListView.ItemsSource = _service.SearchMusicsBySongNameOrArtistName(CurrentUser.Username, searchText);
+                SongsView(Visibility.Visible);
+                PlaylistView(Visibility.Collapsed);
+                HomeView(Visibility.Collapsed);
             }
         }
 
@@ -90,21 +88,15 @@ namespace MusicPlayer.PresentationLayer
         {
             var openFileDialog = new OpenFileDialog
             {
-                Filter = "Music Files (*.mp3;*.wav)|*.mp3;*.wav"
+                Filter = "Music Files (*.mp3;*.wav)|*.mp3;*.wav",
+                Multiselect = true // Cho phép chọn nhiều tệp
             };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                var sourcePath = openFileDialog.FileName;
-                var fileName = Path.GetFileName(sourcePath);
-
-                // Đọc metadata từ file MP3
-                var tagFile = TagLib.File.Create(sourcePath);
-                var musicName = tagFile.Tag.Title ?? "Unknown Title";
-                var artistNames = tagFile.Tag.Performers;
-                var artistName = artistNames.Length > 0 ? string.Join(", ", artistNames) : "Unknown Artist";
-
+                var sourceFiles = openFileDialog.FileNames; // Danh sách các tệp được chọn
                 var storagePath = GetStoragePath();
+
                 if (string.IsNullOrEmpty(storagePath))
                 {
                     MessageBox.Show("Storage path is not configured correctly.");
@@ -117,28 +109,46 @@ namespace MusicPlayer.PresentationLayer
                     Directory.CreateDirectory(userFolder);
                 }
 
-                var destinationPath = Path.Combine(userFolder, fileName);
-                try
+                foreach (var sourcePath in sourceFiles)
                 {
-                    File.Copy(sourcePath, destinationPath);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Music is already exist!");
-                    return;
+                    var fileName = Path.GetFileName(sourcePath);
+                    var tagFile = TagLib.File.Create(sourcePath);
+                    var musicName = tagFile.Tag.Title ?? "Unknown Title";
+                    var artistNames = tagFile.Tag.Performers;
+                    var artistName = artistNames.Length > 0 ? string.Join(", ", artistNames) : "Unknown Artist";
+
+                    var destinationPath = Path.Combine(userFolder, fileName);
+
+                    try
+                    {
+                        if (File.Exists(destinationPath))
+                        {
+                            // Tệp đã tồn tại, có thể bỏ qua hoặc thông báo cho người dùng
+                            MessageBox.Show($"Music '{fileName}' already exists.");
+                            continue;
+                        }
+
+                        File.Copy(sourcePath, destinationPath);
+
+                        var music = new Music
+                        {
+                            MusicName = musicName,
+                            ArtistName = artistName,
+                            CreatedDate = DateTime.Now,
+                            Status = true,
+                            Link = destinationPath,
+                            UserId = CurrentUser?.UserId ?? 0 // Gán trực tiếp UserId
+                        };
+
+                        _service.AddMusic(music);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error while copying '{fileName}': {ex.Message}");
+                        // Xử lý lỗi nếu cần
+                    }
                 }
 
-                var music = new Music
-                {
-                    MusicName = musicName,
-                    ArtistName = artistName,
-                    CreatedDate = DateTime.Now,
-                    Status = true,
-                    Link = destinationPath,
-                    UserId = CurrentUser?.UserId ?? 0 // Gán trực tiếp UserId
-                };
-
-                _service.AddMusic(music);
                 LoadData();
             }
         }
@@ -510,16 +520,17 @@ namespace MusicPlayer.PresentationLayer
 
         private void OpenPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedPlaylist = PlaylistsListView.SelectedItems[0] as Playlist; //sửa
-            if (selectedPlaylist == null)
+            var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList(); 
+            if (selectedPlaylists.IsNullOrEmpty())
             {
                 MessageBox.Show("Please select a playlist to open!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             ListWindow listWindow = new();
-            listWindow.CurrentPlaylist = selectedPlaylist;
+            listWindow.CurrentPlaylist = selectedPlaylists[0]; //Chỉ cho phép open 1 playlist
             Hide(); //Ẩn màn hình hiện tại đi
+            _mediaPlayer.Stop();
             listWindow.ShowDialog();
             //Sau khi tắt thì load lại data của PlaylistsListView
             LoadPlaylists();
@@ -529,7 +540,7 @@ namespace MusicPlayer.PresentationLayer
         private void UpdatePlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList(); 
-            if (selectedPlaylists == null)
+            if (selectedPlaylists.IsNullOrEmpty())
             {
                 MessageBox.Show("Please select a playlist to update!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -544,7 +555,7 @@ namespace MusicPlayer.PresentationLayer
         private void DeletePlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList();
-            if (selectedPlaylists == null)
+            if (selectedPlaylists.IsNullOrEmpty())
             {
                 MessageBox.Show("Please select playlist(s) to delete!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;

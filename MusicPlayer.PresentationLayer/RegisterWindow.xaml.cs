@@ -1,11 +1,8 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MusicPlayer.BLL.Services;
-using MusicPlayer.DAL;
-using MusicPlayer.DAL.Models;
-using MusicPlayer.DAL.Repositories;
+
 
 namespace MusicPlayer.PresentationLayer
 {
