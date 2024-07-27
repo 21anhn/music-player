@@ -20,6 +20,7 @@ namespace MusicPlayer.PresentationLayer
         private MusicService _service = new();
         private UserService _userService = new();
         private PlaylistService _playlistService = new();
+        private MusicPlaylistService _msService = new();
         private MediaPlayer _mediaPlayer = new MediaPlayer();
         private DispatcherTimer _timer;
         private int _currentMusicIndex = -1; // Chỉ số bài hát hiện tại
@@ -173,11 +174,20 @@ namespace MusicPlayer.PresentationLayer
             {
                 try
                 {
+                    // Kiểm tra xem bài nhạc có nằm trong playlist nào của user không
+                    var isInPlaylist = _msService.GetAll()
+                        .Any(pm => pm.MusicId == music.MusicId && _playlistService.GetAllPlaylists().Any(pl => pl.PlaylistId == pm.PlaylistId && pl.UserId == CurrentUser.UserId));
+
+                    if (File.Exists(music.Link))
+                    {
+                        File.Delete(music.Link);
+                    }
                     _service.DeleteMusic(music);
-                } catch(Exception)
+                }
+                catch (Exception)
                 {
                     MessageBox.Show(music.MusicName + " is in another playlist!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error); //Không cho xóa khi music đang nằm trong 1 playlist
-                }           
+                }
             }
 
             //Xóa xong thì load lại list view
@@ -520,7 +530,7 @@ namespace MusicPlayer.PresentationLayer
 
         private void OpenPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList(); 
+            var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList();
             if (selectedPlaylists.IsNullOrEmpty())
             {
                 MessageBox.Show("Please select a playlist to open!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -539,7 +549,7 @@ namespace MusicPlayer.PresentationLayer
 
         private void UpdatePlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList(); 
+            var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList();
             if (selectedPlaylists.IsNullOrEmpty())
             {
                 MessageBox.Show("Please select a playlist to update!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
