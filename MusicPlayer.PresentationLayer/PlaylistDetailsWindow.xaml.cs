@@ -104,7 +104,6 @@ namespace MusicPlayer.PresentationLayer
                 // Start the timer to update the slider value
                 StartPlaybackTimer();
                 _currentMusicIndex = _playlist.IndexOf(music); // Cập nhật chỉ số bài hát hiện tại
-                MessageBox.Show($"Playing {music.MusicName} by {music.ArtistName}");
             }
             else
             {

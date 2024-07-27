@@ -81,8 +81,8 @@
             <!-- Music Section -->
             <Border x:Name="MusicSection" Grid.Column="1" Grid.Row="1" Background="#282828" CornerRadius="10" Margin="10,0,10,0">
                 <StackPanel Margin="20">
-                    <TextBlock x:Name="SectionTitle" Foreground="White" Text="Home" Style="{StaticResource titleText}" Margin="20"/>
-                    <WrapPanel Visibility="Visible" x:Name="HomeImgWrapPanel"  HorizontalAlignment="Left" Margin="10" Height="377" Width="735">
+                    <TextBlock x:Name="SectionTitle" Foreground="White" Text="Home" Style="{StaticResource titleText}" Margin="10 0"/>
+                    <WrapPanel Visibility="Visible" x:Name="HomeImgWrapPanel"  HorizontalAlignment="Center" Margin="10" Height="auto" Width="auto">
                         <Border CornerRadius="10" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                             <Image Source="/home.png" Width="657" Height="348" Stretch="Fill" RenderTransformOrigin="0.5,0.5">
                                 <Image.RenderTransform>
@@ -98,7 +98,12 @@
                     </WrapPanel>
 
                     <!-- ListView for Songs -->
-                    <ListView x:Name="MusicsListView" Visibility="Collapsed" Height="250" Width="900" SelectionMode="Multiple" Background="#282828" BorderBrush="#1e1e1e" BorderThickness="1">
+                    <StackPanel x:Name="SongsVisibileStackPanel" Visibility="Collapsed" Orientation="Horizontal" Margin="10 10 10 20" HorizontalAlignment="Right">
+                        <Button Content="Upload Song" Width="120" Height="30" Background="#0DAB09" Foreground="White" Click="UploadSongButton_Click"  Style="{StaticResource DefaultButtonStyle}"/>
+
+                        <Button Content="Delete Song" Width="120" Background="#D32F2F" Foreground="White" Click="DeleteSongButton_Click" Style="{StaticResource DefaultButtonStyle}"/>
+                    </StackPanel>
+                    <ListView x:Name="MusicsListView" Visibility="Collapsed" Height="360" Width="770" SelectionMode="Multiple" Background="#282828" BorderBrush="#1e1e1e" BorderThickness="1" >
                         <ListView.Resources>
                             <!-- Style for GridViewColumnHeader -->
                             <Style TargetType="GridViewColumnHeader">
@@ -130,10 +135,10 @@
                         </ListView.Resources>
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="250"/>
-                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="250"/>
-                                <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="250"/>
-                                <GridViewColumn Header="Action" Width="100">
+                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding MusicName}" Width="220"/>
+                                <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding ArtistName}" Width="220"/>
+                                <GridViewColumn Header="Added Date" DisplayMemberBinding="{Binding CreatedDate}" Width="200"/>
+                                <GridViewColumn Header="Action" Width="125">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Content="Play" Width="80" Background="#1E88E5" Foreground="White" Click="PlayButton_Click"/>
@@ -144,32 +149,24 @@
                         </ListView.View>
                     </ListView>
 
-
-
-                    <StackPanel x:Name="SongsVisibileStackPanel" Visibility="Collapsed" Orientation="Horizontal" Margin="10">
-                        <Button Content="Upload Song" Width="109" Margin="10 0 10 0" Background="#0DAB09" Foreground="White" Click="UploadSongButton_Click" Height="26">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button Content="Delete Song" Width="100" Background="#D32F2F" Foreground="White" Click="DeleteSongButton_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </StackPanel>
+                    
 
                     <!-- ListView for Playlists -->
                     <StackPanel x:Name="PlaylistSection" Visibility="Collapsed" Margin="20">
-                        <ListView x:Name="PlaylistsListView" Height="155" Width="725" SelectionMode="Multiple" Background="#282828" BorderBrush="#1e1e1e" BorderThickness="1">
+                        <Grid Margin="20 10 20 0" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="CreatePlaylistButton" Content="Create Playlist" Width="130" Background="#0DAB09" Foreground="White" Click="CreatePlaylistButton_Click" Height="26" Margin="10" Grid.Column="0" Style="{StaticResource DefaultButtonStyle}"/>
+                            <Button x:Name="OpenPlaylistButton" Content="Open Playlist" Width="130" Background="#0DAB09" Foreground="White" Height="26" Margin="10" Click="OpenPlaylistButton_Click" Grid.Column="1" Style="{StaticResource DefaultButtonStyle}"/>
+                            <Button x:Name="UpdatePlaylistButton" Content="Update Playlist" Width="140" Background="#0DAB09" Foreground="White" Height="26" Margin="10" Click="UpdatePlaylistButton_Click" Grid.Column="2" Style="{StaticResource DefaultButtonStyle}"/>
+                            <Button x:Name="DeletePlaylistButton" Content="Delete Playlist" Width="130" Background="Red" Foreground="White" Height="26" Margin="10" Click="DeletePlaylistButton_Click" Grid.Column="3" Style="{StaticResource DefaultButtonStyle}"/>
+                        </Grid>
+
+                        <ListView x:Name="PlaylistsListView" Height="316" Width="726" SelectionMode="Multiple" Background="#282828" BorderBrush="#1e1e1e" BorderThickness="1">
                             <ListView.Resources>
                                 <!-- Style for GridViewColumnHeader -->
                                 <Style TargetType="GridViewColumnHeader">
@@ -201,49 +198,12 @@
                             </ListView.Resources>
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Playlist Name" DisplayMemberBinding="{Binding PlaylistName}" Width="300"/>
-                                    <GridViewColumn Header="Number of Musics" DisplayMemberBinding="{Binding PlaylistMusics.Count}" Width="100"/>
-                                    <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="300"/>
+                                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding PlaylistName}" Width="300"/>
+                                    <GridViewColumn Header="Number of Musics" DisplayMemberBinding="{Binding PlaylistMusics.Count}" Width="200"/>
+                                    <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="218"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
-
-                        <Button x:Name="CreatePlaylistButton" Content="Create Playlist" Width="120" Background="#1E88E5" Foreground="White" Click="CreatePlaylistButton_Click" Height="26" Margin="10">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button x:Name="OpenPlaylistButton" Content="Open Playlist" Width="120" Background="#1E88E5" Foreground="White" Height="26" Margin="10" Click="OpenPlaylistButton_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button x:Name="UpdatePlaylistButton" Content="Update Playlist" Width="120" Background="#1E88E5" Foreground="White" Height="26" Margin="10" Click="UpdatePlaylistButton_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button x:Name="DeletePlaylistButton" Content="Delete Playlist" Width="120" Background="#1E88E5" Foreground="White" Height="26" Margin="10" Click="DeletePlaylistButton_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
                     </StackPanel>
                     <!-- Music Player Controls -->
 

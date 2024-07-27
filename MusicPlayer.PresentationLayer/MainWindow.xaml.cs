@@ -510,7 +510,7 @@ namespace MusicPlayer.PresentationLayer
 
         private void OpenPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedPlaylist = PlaylistsListView.SelectedItems[0] as Playlist; //Chỉ cho phép open 1 playlist
+            var selectedPlaylist = PlaylistsListView.SelectedItems[0] as Playlist; //sửa
             if (selectedPlaylist == null)
             {
                 MessageBox.Show("Please select a playlist to open!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
