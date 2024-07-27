@@ -104,15 +104,67 @@
             <Border x:Name="MusicSection" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#282828" CornerRadius="20" Margin="20">
                 <StackPanel Margin="20">
                     <TextBlock x:Name="SectionTitle" Foreground="White" Text="Songs in Playlist" FontSize="24" FontWeight="Bold" Margin="20"/>
-                    <ListView x:Name="MusicsListView" Height="300" Width="750" SelectionMode="Multiple">
+                    <ListView x:Name="MusicsListView" Height="216" Width="718" SelectionMode="Multiple" Background="Black" BorderBrush="White" BorderThickness="1">
+                        <ListView.Resources>
+                            <!-- Style for GridViewColumnHeader -->
+                            <Style TargetType="GridViewColumnHeader">
+                                <Setter Property="Background" Value="#444444"/>
+                                <!-- Lighter gray for header background -->
+                                <Setter Property="Foreground" Value="White"/>
+                                <!-- White text -->
+                                <Setter Property="Padding" Value="10,5"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="FontSize" Value="14"/>
+                            </Style>
+
+                            <!-- Style for ListViewItem (rows) -->
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#555555"/>
+                                <!-- Slightly lighter gray for border -->
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="Padding" Value="10"/>
+                                <Setter Property="Margin" Value="0,0,0,1"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <!-- White text -->
+                                <Style.Triggers>
+                                    <!-- Highlight row on mouse over -->
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#666666"/>
+                                        <!-- Lighter gray on hover -->
+                                    </Trigger>
+                                    <!-- Highlight row when selected -->
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#888888"/>
+                                        <!-- Even lighter gray when selected -->
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+
+                            <!-- Style for Button inside GridViewColumn -->
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#444444"/>
+                                <!-- Lighter gray for button background -->
+                                <Setter Property="Foreground" Value="White"/>
+                                <!-- White text -->
+                                <Setter Property="BorderBrush" Value="White"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="4"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </ListView.Resources>
+
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Music Id" DisplayMemberBinding="{Binding MusicId}" Width="50"/>
-                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="300"/>
-                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="400"/>
+                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="250"/>
+                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="300"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
+
+
+
                 </StackPanel>
             </Border>
         </Grid>

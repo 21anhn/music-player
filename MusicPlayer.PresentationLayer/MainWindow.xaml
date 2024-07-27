@@ -98,23 +98,53 @@
                     </WrapPanel>
 
                     <!-- ListView for Songs -->
-                    <ListView x:Name="MusicsListView" Visibility="Collapsed" Height="155" Width="725" SelectionMode="Multiple">
+                    <ListView x:Name="MusicsListView" Visibility="Collapsed" Height="250" Width="900" SelectionMode="Multiple" Background="#282828" BorderBrush="#1e1e1e" BorderThickness="1">
+                        <ListView.Resources>
+                            <!-- Style for GridViewColumnHeader -->
+                            <Style TargetType="GridViewColumnHeader">
+                                <Setter Property="Background" Value="#444444"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Padding" Value="10,5"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="FontSize" Value="16"/>
+                            </Style>
+
+                            <!-- Style for ListViewItem (rows) -->
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#555555"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="Padding" Value="10"/>
+                                <Setter Property="Margin" Value="0,0,0,1"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#666666"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#888888"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListView.Resources>
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Music Id" DisplayMemberBinding="{Binding MusicId}" Width="50"/>
-                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="200"/>
-                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="200"/>
-                                <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="200"/>
-                                <GridViewColumn Header="Action" Width="75">
+                                <GridViewColumn Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" Width="250"/>
+                                <GridViewColumn Header="Music Name" DisplayMemberBinding="{Binding MusicName}" Width="250"/>
+                                <GridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" Width="250"/>
+                                <GridViewColumn Header="Action" Width="100">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Play" Width="50" Click="PlayButton_Click"/>
+                                            <Button Content="Play" Width="80" Background="#1E88E5" Foreground="White" Click="PlayButton_Click"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
+
+
 
                     <StackPanel x:Name="SongsVisibileStackPanel" Visibility="Collapsed" Orientation="Horizontal" Margin="10">
                         <Button Content="Upload Song" Width="109" Margin="10 0 10 0" Background="#0DAB09" Foreground="White" Click="UploadSongButton_Click" Height="26">
@@ -139,7 +169,36 @@
 
                     <!-- ListView for Playlists -->
                     <StackPanel x:Name="PlaylistSection" Visibility="Collapsed" Margin="20">
-                        <ListView x:Name="PlaylistsListView" Height="155" Width="725" SelectionMode="Multiple">
+                        <ListView x:Name="PlaylistsListView" Height="155" Width="725" SelectionMode="Multiple" Background="#282828" BorderBrush="#1e1e1e" BorderThickness="1">
+                            <ListView.Resources>
+                                <!-- Style for GridViewColumnHeader -->
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Background" Value="#444444"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                </Style>
+
+                                <!-- Style for ListViewItem (rows) -->
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="#555555"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                    <Setter Property="Margin" Value="0,0,0,1"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#666666"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#888888"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Playlist Name" DisplayMemberBinding="{Binding PlaylistName}" Width="300"/>
@@ -148,6 +207,7 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
+
                         <Button x:Name="CreatePlaylistButton" Content="Create Playlist" Width="120" Background="#1E88E5" Foreground="White" Click="CreatePlaylistButton_Click" Height="26" Margin="10">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
