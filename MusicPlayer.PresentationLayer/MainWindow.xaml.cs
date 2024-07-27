@@ -23,11 +23,11 @@ namespace MusicPlayer.PresentationLayer
     {
         private MusicService _service = new();
         private UserService _userService = new();
+        private PlaylistService _playlistService = new();
         private MediaPlayer _mediaPlayer = new MediaPlayer();
         private DispatcherTimer _timer;
         private int _currentMusicIndex = -1; // Chỉ số bài hát hiện tại
         private List<Music> _playlist = new List<Music>(); // Danh sách bài hát
-        private bool _isReplayEnabled = false; // Trạng thái phát lại
         public User CurrentUser { get; set; }
 
 
@@ -145,18 +145,32 @@ namespace MusicPlayer.PresentationLayer
 
         private void DeleteSongButton_Click(object sender, RoutedEventArgs e)
         {
-            var music = MusicsListView.SelectedItem as Music;
-            if (music == null)
+            //Xóa 1 hoặc nhiều nhạc trong playlist
+            var selectedMusics = MusicsListView.SelectedItems.OfType<Music>().ToList();
+            if (selectedMusics.IsNullOrEmpty())
             {
-                MessageBox.Show("Please select a music to delete!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please selecte a/an music(s) to delete!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
             var result = MessageBox.Show("Confirm delete!", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.No)
             {
                 return;
             }
-            _service.DeleteMusic(music);
+
+            foreach (var music in selectedMusics)
+            {
+                try
+                {
+                    _service.DeleteMusic(music);
+                } catch(Exception)
+                {
+                    MessageBox.Show(music.MusicName + " is in another playlist!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error); //Không cho xóa khi music đang nằm trong 1 playlist
+                }           
+            }
+
+            //Xóa xong thì load lại list view
             LoadData();
         }
 
@@ -176,8 +190,7 @@ namespace MusicPlayer.PresentationLayer
                 SectionTitle.Text = "Songs";
             }
             MusicsListView.Visibility = visibility;
-            UploadSongButton.Visibility = visibility;
-            DeleteSongButton.Visibility = visibility;
+            SongsVisibileStackPanel.Visibility = visibility;
         }
 
         private void PlaylistView(Visibility visibility)
@@ -306,7 +319,7 @@ namespace MusicPlayer.PresentationLayer
                         // Nếu đang bật chế độ phát lại, phát lại bài hát hiện tại
                         PlayMusic(music);
                     }
-                    else 
+                    else
                     {
                         // Nếu không, phát bài hát tiếp theo
                         PlayNextSong();
@@ -318,7 +331,6 @@ namespace MusicPlayer.PresentationLayer
                 // Start the timer to update the slider value
                 StartPlaybackTimer();
                 _currentMusicIndex = _playlist.IndexOf(music); // Cập nhật chỉ số bài hát hiện tại
-                MessageBox.Show($"Playing {music.MusicName} by {music.ArtistName}");
             }
             else
             {
@@ -404,7 +416,7 @@ namespace MusicPlayer.PresentationLayer
         {
             ReplayButton.Visibility = Visibility.Collapsed;
             EnabledReplayButton.Visibility = Visibility.Visible;
-           
+
         }
         private void EnabledReplayButton_Click(object sender, RoutedEventArgs e)
         {
@@ -433,7 +445,7 @@ namespace MusicPlayer.PresentationLayer
             }
         }
 
-             // Event handler for slider value change
+        // Event handler for slider value change
         private void PositionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (_mediaPlayer.NaturalDuration.HasTimeSpan && !_mediaPlayer.IsBuffering)
@@ -494,6 +506,61 @@ namespace MusicPlayer.PresentationLayer
             }
 
             _mediaPlayer.Volume = VolumeSlider.Value;
+        }
+
+        private void OpenPlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedPlaylist = PlaylistsListView.SelectedItems[0] as Playlist; //Chỉ cho phép open 1 playlist
+            if (selectedPlaylist == null)
+            {
+                MessageBox.Show("Please select a playlist to open!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ListWindow listWindow = new();
+            listWindow.CurrentPlaylist = selectedPlaylist;
+            Hide(); //Ẩn màn hình hiện tại đi
+            listWindow.ShowDialog();
+            //Sau khi tắt thì load lại data của PlaylistsListView
+            LoadPlaylists();
+            Show(); //Show lại màn hình main
+        }
+
+        private void UpdatePlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList(); 
+            if (selectedPlaylists == null)
+            {
+                MessageBox.Show("Please select a playlist to update!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            PlayListWindow playListWindow = new();
+            playListWindow.CurrentPlaylist = selectedPlaylists[0]; //Chỉ cho phép update 1 playlist
+            playListWindow.CurrentUser = CurrentUser; //Lấy danh sách nhạc của user đó
+            playListWindow.ShowDialog();
+            LoadPlaylists(); //Reset lại playlist
+        }
+
+        private void DeletePlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedPlaylists = PlaylistsListView.SelectedItems.OfType<Playlist>().ToList();
+            if (selectedPlaylists == null)
+            {
+                MessageBox.Show("Please select playlist(s) to delete!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var result = MessageBox.Show("Confirm delete!", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+
+            foreach (var item in selectedPlaylists)
+            {
+                _playlistService.DeletePlaylist(item);
+            }
+            LoadPlaylists();
         }
     }
 }

@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Microsoft.IdentityModel.Tokens;
 using MusicPlayer.BLL.Services;
 using MusicPlayer.DAL.Models;
 
@@ -25,9 +13,10 @@ namespace MusicPlayer.PresentationLayer
     {
         private UserService _userService = new();
         private PlaylistService _playlistService = new();
+        private MusicService _musicService = new();
         private MusicPlaylistService _msService = new();
         public User CurrentUser { get; set; }
-
+        public Playlist CurrentPlaylist { get; set; }
 
 
         public PlayListWindow()
@@ -45,7 +34,17 @@ namespace MusicPlayer.PresentationLayer
         private void LoadSongs()
         {
             MusicsListView.ItemsSource = null;
-            MusicsListView.ItemsSource = _userService.GetAllMusicsByUsername(CurrentUser.Username);
+            var musicsOfUser = _userService.GetAllMusicsByUsername(CurrentUser.Username);
+            //Khi tạo mới playlist
+            if (CurrentPlaylist == null)
+            {
+                MusicsListView.ItemsSource = musicsOfUser;
+            }
+            else //Update playlist có sẵn
+            {
+                MusicsListView.ItemsSource = _musicService.GetMusicsNotInPlaylist(musicsOfUser, CurrentPlaylist.PlaylistId);
+            }
+            
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -55,9 +54,10 @@ namespace MusicPlayer.PresentationLayer
 
         private void CreateSongButton_Click(object sender, RoutedEventArgs e)
         {
-            var playlistName = PlayListTextBox.Text;
-            var selectedMusics = MusicsListView.SelectedItems as List<Music>;
+            var playlistName = PlayListNameTextBox.Text;
+            var selectedMusics = MusicsListView.SelectedItems.OfType<Music>().ToList();
 
+            
             if (string.IsNullOrEmpty(playlistName))
             {
                 MessageBox.Show("Please enter a playlist name!");
@@ -80,6 +80,9 @@ namespace MusicPlayer.PresentationLayer
                 UserId = CurrentUser?.UserId ?? 0 // Gán trực tiếp UserId
             };
 
+            _playlistService.AddPlaylist(playlist);
+
+
             if (selectedMusics != null)
             {
                 foreach (var selectedMusic in selectedMusics)
@@ -88,6 +91,7 @@ namespace MusicPlayer.PresentationLayer
                     {
                         var playlistMusic = new PlaylistMusic
                         {
+                            Id = 0,
                             MusicId = selectedMusic.MusicId,
                             PlaylistId = playlist.PlaylistId,
                         };
@@ -95,16 +99,14 @@ namespace MusicPlayer.PresentationLayer
                     }
                 }
             }
-
-            _playlistService.AddPlaylist(playlist);
             Close();
         }
 
-        private void PlayListTextBlock_MouseDown(object sender, MouseButtonEventArgs e) => PlayListTextBox.Focus();
+        private void PlayListTextBlock_MouseDown(object sender, MouseButtonEventArgs e) => PlayListNameTextBox.Focus();
 
         private void PlayListTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(PlayListTextBox.Text) && PlayListTextBox.Text.Length > 0)
+            if (!string.IsNullOrEmpty(PlayListNameTextBox.Text) && PlayListNameTextBox.Text.Length > 0)
                 PlayListTextBlock.Visibility = Visibility.Collapsed;
             else
                 PlayListTextBlock.Visibility = Visibility.Visible;
@@ -112,6 +114,10 @@ namespace MusicPlayer.PresentationLayer
 
         private void Window_Loaded_1(object sender, RoutedEventArgs e)
         {
+            if(CurrentPlaylist != null)
+            {
+                PlayListNameTextBox.Text = CurrentPlaylist.PlaylistName;
+            }
             LoadSongs();
         }
     }

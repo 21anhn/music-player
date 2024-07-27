@@ -54,7 +54,7 @@
                                        VerticalAlignment="Center" Grid.Column="1" MouseDown="PlayListTextBlock_MouseDown" />
 
                             <!-- Playlist Name TextBox -->
-                            <TextBox x:Name="PlayListTextBox"
+                            <TextBox x:Name="PlayListNameTextBox"
                                      Height="28"
                                      Margin="10,0,10,0"
                                      Padding="0 2"
@@ -69,7 +69,7 @@
                     </Border>
 
                     <!-- Add Song Button -->
-                    <Button x:Name="CreateSongButton" Content="Create" Background="#1E88E5" Foreground="White" Click="CreateSongButton_Click" Grid.Column="1" Margin="422,20,10,20" Grid.ColumnSpan="2">
+                    <Button x:Name="CreateSongButton" Content="Save" Background="#1E88E5" Foreground="White" Click="CreateSongButton_Click" Grid.Column="1" Margin="422,20,10,20" Grid.ColumnSpan="2">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Background="{TemplateBinding Background}"

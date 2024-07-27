@@ -7,7 +7,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="ListWindow.xaml.cs">
+    <Compile Update="PlaylistDetailsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="LoginWindow.xaml.cs">
@@ -18,7 +18,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ListWindow.xaml">
+    <Page Update="PlaylistDetailsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="LoginWindow.xaml">

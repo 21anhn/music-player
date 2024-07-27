@@ -25,5 +25,18 @@ namespace MusicPlayer.DAL.Repositories
             return _context.Playlists.Include(p => p.PlaylistMusics).Include(p => p.User).ToList();
         }
 
+        public void Delete(Playlist playlist)
+        {
+            _context = new();
+            _context.Playlists.Remove(playlist);
+            _context.SaveChanges();
+        }
+
+        public void Update(Playlist playlist)
+        {
+            _context = new();
+            _context.Playlists.Update(playlist);
+            _context.SaveChanges();
+        }
     }
 }
