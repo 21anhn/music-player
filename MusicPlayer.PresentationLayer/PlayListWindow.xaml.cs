@@ -64,24 +64,32 @@ namespace MusicPlayer.PresentationLayer
                 return;
             }
 
-            var playlist = _playlistService.GetAllPlaylists().FirstOrDefault(p => p.PlaylistName == playlistName);
+            Playlist playlist;
 
-            if (playlist != null)
+            if(CurrentPlaylist == null)
             {
-                MessageBox.Show("Playlist name already exist!");
-                return;
+                playlist = _playlistService.GetAllPlaylists().FirstOrDefault(p => p.PlaylistName == playlistName);
+
+                if (playlist != null)
+                {
+                    MessageBox.Show("Playlist name already exist!");
+                    return;
+                }
+
+                playlist = new()
+                {
+                    PlaylistName = playlistName,
+                    CreatedDate = DateTime.Now,
+                    Status = true,
+                    UserId = CurrentUser?.UserId ?? 0 // Gán trực tiếp UserId
+                };
+
+                _playlistService.AddPlaylist(playlist);
             }
-
-            playlist = new()
+            else
             {
-                PlaylistName = playlistName,
-                CreatedDate = DateTime.Now,
-                Status = true,
-                UserId = CurrentUser?.UserId ?? 0 // Gán trực tiếp UserId
-            };
-
-            _playlistService.AddPlaylist(playlist);
-
+                playlist = CurrentPlaylist;
+            }
 
             if (selectedMusics != null)
             {
@@ -98,6 +106,12 @@ namespace MusicPlayer.PresentationLayer
                         _msService.Add(playlistMusic);
                     }
                 }
+            }
+
+            //Update lại playlist có sẵn
+            if(CurrentPlaylist != null)
+            {
+                _playlistService.UpdatePlaylist(playlist);
             }
             Close();
         }
