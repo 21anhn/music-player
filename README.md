@@ -47,19 +47,19 @@ Please find below some screenshots of the FPT Music Player interface:
 
 **Login Screen**
 
-![Login Screen](https://raw.githubusercontent.com/21anhn/images-repo/main/images/login-music-player.PNG?token=GHSAT0AAAAAACRRWI7T4GURLMYJYS3MOVO4ZVGIAMA)
+![Login Screen](https://github.com/user-attachments/assets/14702731-fd96-4def-a8bb-634699bfeb55)
 
 **Register Screen**
 
-![Register Screen](https://raw.githubusercontent.com/21anhn/images-repo/main/images/register-music-play.PNG?token=GHSAT0AAAAAACRRWI7TSPRBERQJTPU27DZIZVGIA5Q)
+![Register Screen](https://github.com/user-attachments/assets/a8cade36-56b4-4a1c-97b0-5d7b7420d707)
 
 **Home Screen - FPT Music Player**
 
-![Home Screen - FPT Music Player](https://raw.githubusercontent.com/21anhn/images-repo/main/images/home-music-player.png?token=GHSAT0AAAAAACRRWI7SLE3Z7E2E5YRRP4L4ZVGH2YQ)
+![Home Screen - FPT Music Player](https://github.com/user-attachments/assets/b5454a4a-cd51-4318-ae78-670af6de8df3)
 
 **Play Songs Screen - FPT Music Player**
 
-![Play Songs Screen - FPT Music Player](https://raw.githubusercontent.com/21anhn/images-repo/main/images/song-music-player.png?token=GHSAT0AAAAAACRRWI7TIKP4FYRXHAO5XKAKZVGH3YQ)
+![Play Songs Screen - FPT Music Player](https://github.com/user-attachments/assets/c82a56e7-15da-4080-8680-9201697688c6)
 
 
 ## Team Members
